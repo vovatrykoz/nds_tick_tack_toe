@@ -6,7 +6,7 @@ using namespace std;
 #include <string>
 #include <iostream>
 
-void drawGrid(Grid grid, PrintConsole *console);
+void drawGrid(Cell** grid, int size, PrintConsole *console);
 void drawCell(cellMark mark, int x, int y, PrintConsole *console);
 
 //---------------------------------------------------------------------------------
@@ -44,7 +44,7 @@ int main(void) {
 			}			
 		}
 
-		drawCell(grid.getGridArray()[0][0].getMark(), 5, 5, console);
+		drawGrid(grid.getGridArray(), size, console);
 
 		int keys;
 		
@@ -109,11 +109,11 @@ int main(void) {
 	return 0;
 }
 
-void drawGrid(Grid grid, PrintConsole *console) {
-	cout << "test";
-	/*
-	int size = grid.getSize();
-	Cell** gridArr = grid.getGridArray();
+void drawGrid(Cell** grid, int size, PrintConsole *console) {
+	//int size = grid.getSize();
+	//Cell** gridArr = grid.getGridArray();
+
+	Cell** gridArr = grid;
 
 	//cout << gridArr[0][0].getMark();
 
@@ -121,7 +121,7 @@ void drawGrid(Grid grid, PrintConsole *console) {
 		for (int j = 0; j < size; j++) {
 			drawCell(gridArr[j][i].getMark(), 5 + 2 * j, 5 + 2 * i, console);
 		}
-	}*/
+	}
 }
 
 void drawCell(cellMark mark, int x, int y, PrintConsole *console) {
