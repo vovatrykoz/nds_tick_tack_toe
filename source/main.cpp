@@ -6,7 +6,8 @@ using namespace std;
 #include <string>
 #include <iostream>
 
-void drawGrid(Cell** grid, int size, PrintConsole *console);
+void test(Grid grid, PrintConsole *console);
+void drawGrid(Cell **grid, int size, PrintConsole *console);
 void drawCell(cellMark mark, int x, int y, PrintConsole *console);
 
 //---------------------------------------------------------------------------------
@@ -29,23 +30,16 @@ int main(void) {
 		exit(EXIT_FAILURE);		  
 	}
 
+	//debug
 	grid.getGridArray()[0][0].setMark(Cross);
+	grid.getGridArray()[1][1].setMark(Circle);
+
+	drawGrid(grid.getGridArray(), size, console);
+
+	//test(grid, console);
 
 	while(1) 
 	{
-		consoleSelect(console);
-		consoleSetWindow(console, 0, 0, 30, 1);
-
-		for (int i = 0; i < size; i++)
-		{
-			for (int j = 0; j < size; j++)
-			{
-				cout << grid.getGridArray()[j][i].getMark();
-			}			
-		}
-
-		drawGrid(grid.getGridArray(), size, console);
-
 		int keys;
 		
 		scanKeys();
@@ -56,6 +50,9 @@ int main(void) {
 		
 		if(keys & KEY_TOUCH)
 		{
+			drawGrid(grid.getGridArray(), size, console);
+			//test(grid, console);
+
 			touchRead(&touch);
 
 			grid.getGridArray()[0][0].setMark(Empty);
@@ -109,13 +106,11 @@ int main(void) {
 	return 0;
 }
 
-void drawGrid(Cell** grid, int size, PrintConsole *console) {
+void drawGrid(Cell **grid, int size, PrintConsole *console) {
 	//int size = grid.getSize();
 	//Cell** gridArr = grid.getGridArray();
 
 	Cell** gridArr = grid;
-
-	//cout << gridArr[0][0].getMark();
 
 	for (int i = 0; i < size; i++) {
 		for (int j = 0; j < size; j++) {
@@ -133,13 +128,37 @@ void drawCell(cellMark mark, int x, int y, PrintConsole *console) {
 	                     "|x|"
 			             "+-+";
 
+	string circledCell = "+-+"
+	                     "|o|"
+			             "+-+";
+
 	consoleSelect(console);
 	consoleSetWindow(console, x, y, 3, 3);
 
-	if(mark == 0) {
-		cout << emptyCell;	
-	} else if (mark == 1) {
+	switch (mark)
+	{
+	case Cross:
 		cout << crossedCell;
-	}
+		break;
+		
+	case Circle:
+		cout << circledCell;
+		break;
 	
+	default:
+	    cout << emptyCell;
+		break;
+	}	
+}
+
+
+void test(Grid grid, PrintConsole *console) {
+	int size = grid.getSize();
+	Cell** gridArr = grid.getGridArray();
+
+	for (int i = 0; i < size; i++) {
+		for (int j = 0; j < size; j++) {
+			drawCell(gridArr[j][i].getMark(), 5 + 2 * j, 5 + 2 * i, console);
+		}
+	}
 }
