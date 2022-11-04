@@ -7,6 +7,4 @@ int Grid::getSize() {
   return gridSize;
 }
 
-Grid::Grid(int size) {
-  gridSize = size;
-}
+Grid::Grid(int size) : gridSize(size) {}

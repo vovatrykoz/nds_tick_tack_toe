@@ -1,3 +1,7 @@
 #include <cell.h>
 
-Cell::Cell() : fill(Empty) {};
+Cell::Cell() : mark(Empty) {};
+
+Cell::setMark(cellMark mark) {
+    this->mark = mark;
+}

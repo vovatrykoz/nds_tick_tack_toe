@@ -1,11 +1,11 @@
-enum cellFill { Empty, Cross, Circle };
+enum cellMark { Empty, Cross, Circle };
 
 class Cell {
     private:
-      cellFill fill;
+      cellMark mark;
 
     public:
       Cell();
 
-      bool setFill(cellFill fill);
+      void setMark(cellMark mark);
 };

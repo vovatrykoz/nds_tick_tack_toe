@@ -30591,28 +30591,28 @@ ARM.exidx       0x000000000205da20     0x12d0
  .debug_abbrev  0x0000000000002d32      0x31f D:/DSWork/devkitPro/libnds/lib\libnds9.a(system.o)
  .debug_abbrev  0x0000000000003051       0x12 D:/DSWork/devkitPro/libnds/lib\libnds9.a(biosCalls.o)
 
-.debug_line     0x0000000000000000     0x678b
+.debug_line     0x0000000000000000     0x6788
  *(.debug_line)
- .debug_line    0x0000000000000000      0x3f4 grid.o
- .debug_line    0x00000000000003f4      0x948 main.o
- .debug_line    0x0000000000000d3c      0x2d4 D:/DSWork/devkitPro/libnds/lib\libnds9.a(touch.o)
- .debug_line    0x0000000000001010     0x1414 D:/DSWork/devkitPro/libnds/lib\libnds9.a(console.o)
- .debug_line    0x0000000000002424      0x399 D:/DSWork/devkitPro/libnds/lib\libnds9.a(keys.o)
- .debug_line    0x00000000000027bd      0x597 D:/DSWork/devkitPro/libnds/lib\libnds9.a(initSystem.o)
- .debug_line    0x0000000000002d54       0x8f D:/DSWork/devkitPro/libnds/lib\libnds9.a(securearea.o)
- .debug_line    0x0000000000002de3      0x54c D:/DSWork/devkitPro/libnds/lib\libnds9.a(interrupts.o)
- .debug_line    0x000000000000332f      0x23b D:/DSWork/devkitPro/libnds/lib\libnds9.a(libnds_exit.arm.o)
- .debug_line    0x000000000000356a     0x14f5 D:/DSWork/devkitPro/libnds/lib\libnds9.a(fifosystem.o)
- .debug_line    0x0000000000004a5f       0xe8 D:/DSWork/devkitPro/libnds/lib\libnds9.a(mpu_setup.o)
- .debug_line    0x0000000000004b47       0x74 D:/DSWork/devkitPro/libnds/lib\libnds9.a(IntrWait.o)
- .debug_line    0x0000000000004bbb       0x5c D:/DSWork/devkitPro/libnds/lib\libnds9.a(cpu_clock.o)
- .debug_line    0x0000000000004c17       0x80 D:/DSWork/devkitPro/libnds/lib\libnds9.a(interruptDispatcher.o)
- .debug_line    0x0000000000004c97       0x57 D:/DSWork/devkitPro/libnds/lib\libnds9.a(swiSoftReset.o)
- .debug_line    0x0000000000004cee      0x725 D:/DSWork/devkitPro/libnds/lib\libnds9.a(background.o)
- .debug_line    0x0000000000005413      0x837 D:/DSWork/devkitPro/libnds/lib\libnds9.a(trig.o)
- .debug_line    0x0000000000005c4a      0x4b5 D:/DSWork/devkitPro/libnds/lib\libnds9.a(video.o)
- .debug_line    0x00000000000060ff      0x4dc D:/DSWork/devkitPro/libnds/lib\libnds9.a(system.o)
- .debug_line    0x00000000000065db      0x1b0 D:/DSWork/devkitPro/libnds/lib\libnds9.a(biosCalls.o)
+ .debug_line    0x0000000000000000      0x3f1 grid.o
+ .debug_line    0x00000000000003f1      0x948 main.o
+ .debug_line    0x0000000000000d39      0x2d4 D:/DSWork/devkitPro/libnds/lib\libnds9.a(touch.o)
+ .debug_line    0x000000000000100d     0x1414 D:/DSWork/devkitPro/libnds/lib\libnds9.a(console.o)
+ .debug_line    0x0000000000002421      0x399 D:/DSWork/devkitPro/libnds/lib\libnds9.a(keys.o)
+ .debug_line    0x00000000000027ba      0x597 D:/DSWork/devkitPro/libnds/lib\libnds9.a(initSystem.o)
+ .debug_line    0x0000000000002d51       0x8f D:/DSWork/devkitPro/libnds/lib\libnds9.a(securearea.o)
+ .debug_line    0x0000000000002de0      0x54c D:/DSWork/devkitPro/libnds/lib\libnds9.a(interrupts.o)
+ .debug_line    0x000000000000332c      0x23b D:/DSWork/devkitPro/libnds/lib\libnds9.a(libnds_exit.arm.o)
+ .debug_line    0x0000000000003567     0x14f5 D:/DSWork/devkitPro/libnds/lib\libnds9.a(fifosystem.o)
+ .debug_line    0x0000000000004a5c       0xe8 D:/DSWork/devkitPro/libnds/lib\libnds9.a(mpu_setup.o)
+ .debug_line    0x0000000000004b44       0x74 D:/DSWork/devkitPro/libnds/lib\libnds9.a(IntrWait.o)
+ .debug_line    0x0000000000004bb8       0x5c D:/DSWork/devkitPro/libnds/lib\libnds9.a(cpu_clock.o)
+ .debug_line    0x0000000000004c14       0x80 D:/DSWork/devkitPro/libnds/lib\libnds9.a(interruptDispatcher.o)
+ .debug_line    0x0000000000004c94       0x57 D:/DSWork/devkitPro/libnds/lib\libnds9.a(swiSoftReset.o)
+ .debug_line    0x0000000000004ceb      0x725 D:/DSWork/devkitPro/libnds/lib\libnds9.a(background.o)
+ .debug_line    0x0000000000005410      0x837 D:/DSWork/devkitPro/libnds/lib\libnds9.a(trig.o)
+ .debug_line    0x0000000000005c47      0x4b5 D:/DSWork/devkitPro/libnds/lib\libnds9.a(video.o)
+ .debug_line    0x00000000000060fc      0x4dc D:/DSWork/devkitPro/libnds/lib\libnds9.a(system.o)
+ .debug_line    0x00000000000065d8      0x1b0 D:/DSWork/devkitPro/libnds/lib\libnds9.a(biosCalls.o)
 
 .debug_frame    0x0000000000000000      0xa28
  *(.debug_frame)
