@@ -6,9 +6,19 @@ using namespace std;
 #include <string>
 #include <iostream>
 
+#define GRID_OFFSET 5
+//position of the first pixel of the first square
+#define TOUCH_X_BASE_PX 45
+#define TOUCH_Y_BASE_PX 45
+#define TOUCH_X_PIX_STEP 16
+#define TOUCH_Y_PIX_STEP 16
+
 void test(Grid grid, PrintConsole *console);
 void drawGrid(Cell **grid, int size, PrintConsole *console);
 void drawCell(cellMark mark, int x, int y, PrintConsole *console);
+
+int determineXCoords(int offsetX);
+int determineYCoords(int offsetY);
 
 //---------------------------------------------------------------------------------
 int main(void) {
@@ -50,10 +60,24 @@ int main(void) {
 		
 		if(keys & KEY_TOUCH)
 		{
+			consoleClear();
+
 			drawGrid(grid.getGridArray(), size, console);
 			//test(grid, console);
 
 			touchRead(&touch);
+
+			consoleSetWindow(console, 0, 0, 30, 10);
+
+			cout << touch.px;
+			cout << "\n";
+			cout << touch.py;
+			cout << "\n";
+			if(touch.px > TOUCH_X_BASE_PX && touch.py > TOUCH_Y_BASE_PX) {
+				cout << determineXCoords(touch.px);
+				cout << "\n";
+				cout << determineYCoords(touch.py);
+			}
 
 			grid.getGridArray()[0][0].setMark(Empty);
 		}
@@ -158,7 +182,15 @@ void test(Grid grid, PrintConsole *console) {
 
 	for (int i = 0; i < size; i++) {
 		for (int j = 0; j < size; j++) {
-			drawCell(gridArr[j][i].getMark(), 5 + 2 * j, 5 + 2 * i, console);
+			drawCell(gridArr[j][i].getMark(), GRID_OFFSET + 2 * j, GRID_OFFSET + 2 * i, console);
 		}
 	}
+}
+
+int determineXCoords(int offsetX) {
+	return (offsetX - TOUCH_X_BASE_PX) / TOUCH_X_PIX_STEP;
+}
+
+int determineYCoords(int offsetX) {
+	return (offsetX - TOUCH_Y_BASE_PX) / TOUCH_Y_PIX_STEP;
 }
