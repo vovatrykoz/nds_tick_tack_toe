@@ -2,6 +2,10 @@
 
 Cell::Cell() : mark(Empty) {};
 
-Cell::setMark(cellMark mark) {
+void Cell::getMark() {
+    return mark;
+}
+
+void Cell::setMark(cellMark mark) {
     this->mark = mark;
 }

@@ -7,4 +7,16 @@ int Grid::getSize() {
   return gridSize;
 }
 
-Grid::Grid(int size) : gridSize(size) {}
+Cell* Grid::getGridArray() {
+  return gridArray;
+}
+
+
+Grid::Grid(int size) : gridSize(size) {
+  gridArray = (Cell*)calloc(sizeof(Cell), size);
+  //gridArray = NULL;
+}
+
+Grid::~Grid() {
+  free(gridArray);
+}

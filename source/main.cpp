@@ -21,6 +21,13 @@ int main(void) {
 
 	Grid grid = Grid(size);
 
+	if(!grid.getGridArray()) {
+		consoleSelect(console);
+		consoleSetWindow(console, 0, 0, 30, 1);
+		cout << "Grid memory allocation failure";
+		exit(EXIT_FAILURE);		  
+	}
+
 	while(1) 
 	{
 		int keys;
