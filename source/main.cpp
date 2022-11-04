@@ -6,8 +6,8 @@ using namespace std;
 #include <string>
 #include <iostream>
 
+void drawCell(int x, int y, PrintConsole *console);
 void drawGrid(Grid grid, PrintConsole *console);
-void drawCell(PrintConsole *console, int x, int y);
 
 //---------------------------------------------------------------------------------
 int main(void) {
@@ -24,6 +24,7 @@ int main(void) {
 	if(!grid.getGridArray()) {
 		consoleSelect(console);
 		consoleSetWindow(console, 0, 0, 30, 1);
+		
 		cout << "Grid memory allocation failure";
 		exit(EXIT_FAILURE);		  
 	}
@@ -100,12 +101,12 @@ void drawGrid(Grid grid, PrintConsole *console) {
 
 	for (int i = 0; i < size; i++) {
 		for (int j = 0; j < size; j++) {
-			drawCell(console, 5 + 2 * i, 5 + 2 * j);
+			drawCell(5 + 2 * i, 5 + 2 * j, console);
 		}
 	}
 }
 
-void drawCell(PrintConsole *console, int x, int y) {
+void drawCell(int x, int y, PrintConsole *console) {
 	string emptyCell = "+-+"
 	                   "| |"
 			           "+-+";
