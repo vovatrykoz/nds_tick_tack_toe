@@ -59,7 +59,8 @@ main.o: D:/DSWork/lessons_in_prog/nds_tick_tack_toe/source/main.cpp \
  D:/DSWork/devkitPro/libnds/include/nds/arm9/video.h \
  D:/DSWork/devkitPro/libnds/include/nds/arm9/videoGL.h \
  D:/DSWork/devkitPro/libnds/include/nds/arm9/nand.h \
- D:/DSWork/lessons_in_prog/nds_tick_tack_toe/include/grid.h
+ D:/DSWork/lessons_in_prog/nds_tick_tack_toe/include/grid.h \
+ D:/DSWork/lessons_in_prog/nds_tick_tack_toe/include/cell.h
 D:/DSWork/devkitPro/libnds/include/nds.h:
 D:/DSWork/devkitPro/libnds/include/nds/libversion.h:
 D:/DSWork/devkitPro/libnds/include/nds/ndstypes.h:
@@ -121,3 +122,4 @@ D:/DSWork/devkitPro/libnds/include/nds/arm9/video.h:
 D:/DSWork/devkitPro/libnds/include/nds/arm9/videoGL.h:
 D:/DSWork/devkitPro/libnds/include/nds/arm9/nand.h:
 D:/DSWork/lessons_in_prog/nds_tick_tack_toe/include/grid.h:
+D:/DSWork/lessons_in_prog/nds_tick_tack_toe/include/cell.h:
