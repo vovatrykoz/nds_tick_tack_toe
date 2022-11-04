@@ -3,12 +3,12 @@
 class Grid {
     private:
       int gridSize;
-      Cell* gridArray;
+      Cell** gridArray;
 
     public:
       int getSize();
 
-      Cell* getGridArray();
+      Cell** getGridArray();
 
       Grid(int size);
 

@@ -2,7 +2,7 @@
 
 Cell::Cell() : mark(Empty) {};
 
-void Cell::getMark() {
+cellMark Cell::getMark() {
     return mark;
 }
 
