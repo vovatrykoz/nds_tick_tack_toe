@@ -24,5 +24,6 @@ Grid::~Grid() {
   for(int i = 0; i < gridSize; i++) {
     free(gridArray[i]);
   }
+  
   free(gridArray);
 }
