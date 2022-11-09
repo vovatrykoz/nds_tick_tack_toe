@@ -2,7 +2,7 @@
 
 Cell::Cell() : mark(Empty) {};
 
-cellMark Cell::getMark() {
+cellMark Cell::getMark() const {
     return mark;
 }
 

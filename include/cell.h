@@ -5,7 +5,7 @@ class Cell {
       cellMark mark;
 
     public:
-      cellMark getMark();
+      cellMark getMark() const;
   
       void setMark(cellMark mark);
 

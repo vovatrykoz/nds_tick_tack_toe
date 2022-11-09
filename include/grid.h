@@ -2,13 +2,13 @@
 
 class Grid {
     private:
-      int gridSize;
+      const int gridSize;
       Cell** gridArray;
 
     public:
-      int getSize();
+      const int getSize() const;
 
-      Cell** getGridArray();
+      Cell** getGridArray() const;
 
       Grid(int size);
 
