@@ -1,4 +1,4 @@
-enum cellMark { Empty, Cross, Circle };
+enum cellMark { Empty, X, O };
 
 class Cell {
     private:

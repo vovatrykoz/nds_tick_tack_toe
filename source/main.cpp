@@ -13,12 +13,13 @@ using namespace std;
 #define TOUCH_X_PIX_STEP 16
 #define TOUCH_Y_PIX_STEP 16
 
-void test(Grid grid, PrintConsole *console);
+enum Turn { Cross, Circle };
+
 void DrawGrid(Cell **grid, const int size, PrintConsole *console);
 void DrawCell(cellMark mark, int x, int y, PrintConsole *console);
 cellMark CheckVictoryCondition(Cell** grid, int size);
-void ProcessUserInput(touchPosition touch, Grid* grid, int* turn, int maxXStretch, int maxYStretch);
-void Renderer(Grid grid, PrintConsole *console);
+void ProcessUserInput(touchPosition touch, Grid* grid, Turn *turn, int maxXStretch, int maxYStretch);
+void Renderer(const Grid* grid, PrintConsole *console);
 
 int DetermineXCoords(int pixelX);
 int DetermineYCoords(int pixelY);
@@ -32,7 +33,7 @@ int main(void) {
     const unsigned int size = 3;
 	int maxXStretch = TOUCH_X_BASE_PX + 16 * size;
 	int maxYStretch = TOUCH_Y_BASE_PX + 16 * size;
-	int turn = 0;
+	Turn turn = Cross;
 
     touchPosition touch;
 
@@ -50,8 +51,6 @@ int main(void) {
 
 	DrawGrid(grid.getGridArray(), size, console);
 
-	//test(grid, console);
-
 	while(1) 
 	{
 		int keys;
@@ -65,10 +64,7 @@ int main(void) {
 		
 		if(keys == KEY_TOUCH)
 		{
-			//Renderer(grid, console);
-
-			consoleClear();
-			DrawGrid(grid.getGridArray(), grid.getSize(), console);
+			Renderer(&grid, console);
 
 			winner = CheckVictoryCondition(grid.getGridArray(), grid.getSize());
 
@@ -132,33 +128,29 @@ int main(void) {
 	return 0;
 }
 
-void GameEngine(Grid grid) {
-	cellMark winner = CheckVictoryCondition(grid.getGridArray(), grid.getSize());
-}
-
-void ProcessUserInput(touchPosition touch, Grid* grid, int* turn, int maxXStretch, int maxYStretch) {
+void ProcessUserInput(touchPosition touch, Grid* grid, Turn* turn, int maxXStretch, int maxYStretch) {
 	//if within the grid
 	if((touch.px > TOUCH_X_BASE_PX && touch.px < maxXStretch) && (touch.py > TOUCH_Y_BASE_PX && touch.py < maxYStretch)) {
 		//get cell coordinates
 		Cell* currCell = &(grid->getGridArray()[DetermineXCoords(touch.px)][DetermineYCoords(touch.py)]);
 
-		if(currCell->getMark() == Empty && *turn == 0) {
-			currCell->setMark(Cross);
-			(*turn)++;
-		} else if (currCell->getMark() == Empty && *turn == 1) {
-			currCell->setMark(Circle);
-			(*turn)--;
+		if(currCell->getMark() == Empty && *turn == Cross) {
+			currCell->setMark(X);
+			*turn = Circle;
+		} else if (currCell->getMark() == Empty && *turn == Circle) {
+			currCell->setMark(O);
+			*turn = Cross;
 		}
 	}
 }
 
-void Renderer(const Grid grid, PrintConsole *console) {
+void Renderer(const Grid *grid, PrintConsole *console) {
 	consoleClear();
-	DrawGrid(grid.getGridArray(), grid.getSize(), console);
+	DrawGrid(grid->getGridArray(), grid->getSize(), console);
 }
 
 cellMark CheckVictoryCondition(Cell** grid, int size) {
-	int counter = 0;
+	int counter;
 
 	//check horizontally
 	for(int i = 0; i < size; i++) {
@@ -192,6 +184,7 @@ cellMark CheckVictoryCondition(Cell** grid, int size) {
 		}
 	}
 
+	//reset the counter
 	counter = 0;
 
 	//check diagonally (left to right)
@@ -260,11 +253,11 @@ void DrawCell(cellMark mark, int x, int y, PrintConsole *console) {
 
 	switch (mark)
 	{
-	case Cross:
+	case X:
 		cout << crossedCell;
 		break;
 		
-	case Circle:
+	case O:
 		cout << circledCell;
 		break;
 	
@@ -272,17 +265,6 @@ void DrawCell(cellMark mark, int x, int y, PrintConsole *console) {
 	    cout << emptyCell;
 		break;
 	}	
-}
-
-void test(Grid grid, PrintConsole *console) {
-	int size = grid.getSize();
-	Cell** gridArr = grid.getGridArray();
-
-	for (int i = 0; i < size; i++) {
-		for (int j = 0; j < size; j++) {
-			DrawCell(gridArr[j][i].getMark(), GRID_OFFSET + 2 * j, GRID_OFFSET + 2 * i, console);
-		}
-	}
 }
 
 int DetermineXCoords(int pixelX) {
