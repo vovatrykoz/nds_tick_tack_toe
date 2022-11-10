@@ -17,17 +17,17 @@ using namespace std;
 enum Turn { Cross, Circle };
 enum GameType { Singleplayer, Multiplayer };
 
-const string emptyCell = "+-+"
-	                     "| |"
-			             "+-+";
+static const string emptyCell = "+-+"
+	                            "| |"
+			                    "+-+";
 
-const string crossedCell = "+-+"
-					       "|x|"
-					       "+-+";
+static const string crossedCell = "+-+"
+								  "|x|"
+								  "+-+";
 
-const string circledCell = "+-+"
-					       "|o|"
-					       "+-+";
+static const string circledCell = "+-+"
+								  "|o|"
+								  "+-+";
 
 void DrawGrid(Cell **grid, const int size, PrintConsole *console);
 void DrawCell(cellMark mark, int x, int y, PrintConsole *console);
