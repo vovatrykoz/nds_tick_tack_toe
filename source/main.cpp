@@ -6,6 +6,7 @@ using namespace std;
 #include <string>
 #include <iostream>
 
+#define stringify( name ) #name
 #define GRID_OFFSET 5
 //position of the first pixel of the first square
 #define TOUCH_X_BASE_PX 45
@@ -14,10 +15,23 @@ using namespace std;
 #define TOUCH_Y_PIX_STEP 16
 
 enum Turn { Cross, Circle };
+enum GameType { Singleplayer, Multiplayer };
+
+const string emptyCell = "+-+"
+	                     "| |"
+			             "+-+";
+
+const string crossedCell = "+-+"
+					       "|x|"
+					       "+-+";
+
+const string circledCell = "+-+"
+					       "|o|"
+					       "+-+";
 
 void DrawGrid(Cell **grid, const int size, PrintConsole *console);
 void DrawCell(cellMark mark, int x, int y, PrintConsole *console);
-cellMark CheckVictoryCondition(Cell** grid, int size);
+cellMark CheckVictoryCondition(const Grid *grid);
 void ProcessUserInput(touchPosition touch, Grid* grid, Turn *turn, int maxXStretch, int maxYStretch);
 void Renderer(const Grid* grid, PrintConsole *console);
 
@@ -34,6 +48,7 @@ int main(void) {
 	int maxXStretch = TOUCH_X_BASE_PX + 16 * size;
 	int maxYStretch = TOUCH_Y_BASE_PX + 16 * size;
 	Turn turn = Cross;
+	static const char *enumCellMarkStr[] = { "Empty", "Crosses", "Circles" };
 
     touchPosition touch;
 
@@ -51,11 +66,11 @@ int main(void) {
 
 	DrawGrid(grid.getGridArray(), size, console);
 
+	int keys;
+	cellMark winner = Empty;
+
 	while(1) 
-	{
-		int keys;
-		cellMark winner;
-		
+	{		
 		scanKeys();
 		
 		keys = keysHeld();
@@ -66,17 +81,16 @@ int main(void) {
 		{
 			Renderer(&grid, console);
 
-			winner = CheckVictoryCondition(grid.getGridArray(), grid.getSize());
-
 			touchRead(&touch);
 
 			PrintDebugInfo(console, touch, maxXStretch, maxYStretch, grid.getGridArray(), grid.getSize());
 
 		    if(winner == Empty) {
+				winner = CheckVictoryCondition(&grid);
 				ProcessUserInput(touch, &grid, &turn, maxXStretch, maxYStretch);
 			} else {
-				consoleSetWindow(console, 2, 2, 20, 3);
-				cout << winner << " is the winner!";
+				consoleSetWindow(console, 4, 2, 20, 3);
+				cout << enumCellMarkStr[winner] << " win!";
 			}
 		}
 
@@ -149,20 +163,22 @@ void Renderer(const Grid *grid, PrintConsole *console) {
 	DrawGrid(grid->getGridArray(), grid->getSize(), console);
 }
 
-cellMark CheckVictoryCondition(Cell** grid, int size) {
+cellMark CheckVictoryCondition(const Grid *grid) {
 	int counter;
+	const int size = grid->getSize();
+	Cell **gridArr = grid->getGridArray();
 
 	//check horizontally
 	for(int i = 0; i < size; i++) {
 		counter = 0;
 		for(int j = 0; j < size - 1; j++) {
-			if(grid[j][i].getMark() == Empty || grid[j + 1][i].getMark() == Empty) break;
+			if(gridArr[j][i].getMark() == Empty || gridArr[j + 1][i].getMark() == Empty) break;
 
-			if(grid[j][i].getMark() == grid[j + 1][i].getMark()) {
+			if(gridArr[j][i].getMark() == gridArr[j + 1][i].getMark()) {
 				counter++;
 
 			    if(counter == size - 1) {
-				    return grid[j][i].getMark();
+				    return gridArr[j][i].getMark();
 				}
 			}
 		}
@@ -172,13 +188,13 @@ cellMark CheckVictoryCondition(Cell** grid, int size) {
 	for(int i = 0; i < size; i++) {
 		counter = 0;
 		for(int j = 0; j < size - 1; j++) {
-			if(grid[i][j].getMark() == Empty || grid[i][j + 1].getMark() == Empty) break;
+			if(gridArr[i][j].getMark() == Empty || gridArr[i][j + 1].getMark() == Empty) break;
 
-			if(grid[i][j].getMark() == grid[i][j + 1].getMark()) {
+			if(gridArr[i][j].getMark() == gridArr[i][j + 1].getMark()) {
 				counter++;
 
 			    if(counter == size - 1) {
-				    return grid[j][i].getMark();
+				    return gridArr[j][i].getMark();
 				}
 			}
 		}
@@ -189,16 +205,16 @@ cellMark CheckVictoryCondition(Cell** grid, int size) {
 
 	//check diagonally (left to right)
 	for(int j = 0, i = 0; j < size - 1; j++) {
-		if(grid[j][i].getMark() == Empty || grid[j + 1][i + 1].getMark() == Empty) {
+		if(gridArr[j][i].getMark() == Empty || gridArr[j + 1][i + 1].getMark() == Empty) {
 			counter = 0;
 			break;
 		} 
 
-		if(grid[j][i].getMark() == grid[j + 1][i + 1].getMark()) {
+		if(gridArr[j][i].getMark() == gridArr[j + 1][i + 1].getMark()) {
 			counter++;
 
 			if(counter == size - 1) {
-				return grid[j][i].getMark();
+				return gridArr[j][i].getMark();
 			}
 		}
 		i++;
@@ -209,16 +225,16 @@ cellMark CheckVictoryCondition(Cell** grid, int size) {
 
 	//check diagonally (right to left)
 	for(int j = size - 1, i = 0; j >= 0; j--) {
-		if(grid[j][i].getMark() == Empty || grid[j - 1][i + 1].getMark() == Empty) {
+		if(gridArr[j][i].getMark() == Empty || gridArr[j - 1][i + 1].getMark() == Empty) {
 			counter = 0;
 			break;
 		} 
 
-		if(grid[j][i].getMark() == grid[j - 1][i + 1].getMark()) {
+		if(gridArr[j][i].getMark() == gridArr[j - 1][i + 1].getMark()) {
 			counter++;
 
 			if(counter == size - 1) {
-				return grid[j][i].getMark();
+				return gridArr[j][i].getMark();
 			}
 		}
 		i++;
@@ -236,18 +252,6 @@ void DrawGrid(Cell **grid, int size, PrintConsole *console) {
 }
 
 void DrawCell(cellMark mark, int x, int y, PrintConsole *console) {
-	string emptyCell = "+-+"
-	                   "| |"
-			           "+-+";
-
-	string crossedCell = "+-+"
-	                     "|x|"
-			             "+-+";
-
-	string circledCell = "+-+"
-	                     "|o|"
-			             "+-+";
-
 	consoleSelect(console);
 	consoleSetWindow(console, x, y, 3, 3);
 
@@ -293,7 +297,7 @@ void PrintDebugInfo(PrintConsole *console, touchPosition touch, int maxXStretch,
 		cout << DetermineYCoords(touch.py);
 	}
 
-	consoleSetWindow(console, 20, 0, 10, 10);
+	consoleSetWindow(console, 25, 0, 10, 10);
 
 	for(int i = 0; i < size; i++)
 	    for(int j = 0; j < size; j++) {
