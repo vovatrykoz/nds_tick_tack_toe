@@ -110,8 +110,6 @@ void ProcessUserInput(touchPosition touch, Grid* grid, Turn* turn, int maxXStret
 void RegisterMove(Grid* grid, Turn* turn, int posX, int posY) {
 	Cell* currCell = &(grid->getGridArray()[posX][posY]);
 
-	cout << currCell;
-
 	if(currCell->getMark() == Empty && *turn == Cross) {
 		currCell->setMark(X);
 		*turn = Circle;
