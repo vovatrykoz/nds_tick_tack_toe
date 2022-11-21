@@ -95,52 +95,8 @@ int main(void) {
 				cout << enumCellMarkStr[winner] << " win!";
 			}
 		}
-
 		swiWaitForVBlank();
 	}
-
-/*
-	touchPosition touch;
-
-	PrintConsole *console = consoleDemoInit();  
-	PrintConsole right = *console;	
-	
-	consoleSetWindow(console, 15,1,12,16);
-	consoleSetWindow(&right, 1,1,12,16);
-
-	consoleSelect(console);
-	iprintf(border);
-	consoleSelect(&right);
-	iprintf(border);
-
-	consoleSetWindow(console, 2,2,10,14);
-	consoleSetWindow(&right,16,2,10,14);
-	
-	while(1) 
-	{
-		int keys;
-		
-		scanKeys();
-		
-		keys = keysHeld();
-
-		if(keys & KEY_START) break;
-		
-		if(keys & KEY_TOUCH)
-		{
-			touchRead(&touch);
-			
-			if(touch.px < 128)
-				consoleSelect(console);
-			else
-				consoleSelect(&right);
-				
-			iprintf("\nT: %i", touch.px);
-		}
-
-		swiWaitForVBlank();
-	}
-*/
 	return 0;
 }
 
@@ -153,6 +109,8 @@ void ProcessUserInput(touchPosition touch, Grid* grid, Turn* turn, int maxXStret
 
 void RegisterMove(Grid* grid, Turn* turn, int posX, int posY) {
 	Cell* currCell = &(grid->getGridArray()[posX][posY]);
+
+	cout << currCell;
 
 	if(currCell->getMark() == Empty && *turn == Cross) {
 		currCell->setMark(X);
@@ -258,8 +216,7 @@ void DrawCell(cellMark mark, int x, int y, PrintConsole *console) {
 	consoleSelect(console);
 	consoleSetWindow(console, x, y, 3, 3);
 
-	switch (mark)
-	{
+	switch (mark) {
 	case X:
 		cout << crossedCell;
 		break;
