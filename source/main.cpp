@@ -60,8 +60,6 @@ int main(void) {
 
 	Renderer(&grid, console);
 
-	cout << &(grid.getGridArray()[2][1]);
-
 	int keys;
 	cellMark winner = Empty;
 
@@ -83,7 +81,7 @@ int main(void) {
 
 		    if(winner == Empty) {
 				winner = grid.checkVictoryCondition();
-				ProcessUserInput(touch, &grid, &turn, maxXStretch, maxYStretch);
+				ProcessUserInput(touch, &(grid), &turn, maxXStretch, maxYStretch);
 			} else {
 				consoleSetWindow(console, 4, 2, 20, 3);
 				cout << enumCellMarkStr[winner] << " win!";
@@ -96,19 +94,16 @@ int main(void) {
 
 void ProcessUserInput(touchPosition touch, Grid* grid, Turn* turn, int maxXStretch, int maxYStretch) {
 	//if within the grid
-	cout << &(grid->getGridArray()[2][1]);
 	if((touch.px > TOUCH_X_BASE_PX && touch.px < maxXStretch) && (touch.py > TOUCH_Y_BASE_PX && touch.py < maxYStretch))
 		RegisterMove(grid, turn, DetermineXCoords(touch.px), DetermineYCoords(touch.py));
 }
 
 void RegisterMove(Grid* grid, Turn* turn, int posX, int posY) {
-	//Cell* currCell = &(grid->getGridArray()[posX][posY]);
-
-	if(grid->getGridArray()[posX][posY].getMark() == Empty && *turn == Cross) {
-		grid->getGridArray()[posX][posY].setMark(X);
+	if(*turn == Cross) {
+		grid->getCell(posX, posY).setMark(X);
 		*turn = Circle;
-	} else if (grid->getGridArray()[posX][posY].getMark() == Empty && *turn == Circle) {
-		grid->getGridArray()[posX][posY].setMark(O);
+	} else {
+		grid->getCell(posX, posY).setMark(O);
 		*turn = Cross;
 	}
 }

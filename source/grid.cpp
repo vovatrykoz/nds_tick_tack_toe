@@ -2,6 +2,7 @@ using namespace std;
 
 #include <grid.h>
 #include <string>
+#include <iostream> //DEBUG ONLY REMOVE LATER
 
 const int Grid::getSize() const {
   return gridSize;
@@ -87,6 +88,16 @@ cellMark Grid::checkVictoryCondition() const {
 	}
 
 	return Empty;
+}
+
+Cell Grid::getCell(int posX, int posY) const {
+	return gridArray[posX][posY];
+}
+
+void Grid::makeMove(int posX, int posY, cellMark mark) {
+  cout << posX << ' ' << posY << ' ' << mark;
+  if(posX < gridSize && posY < gridSize && gridArray[posX][posY].getMark() == Empty)
+      gridArray[posX][posY].setMark(mark);
 }
 
 Grid::Grid(int size) : gridSize(size) {}

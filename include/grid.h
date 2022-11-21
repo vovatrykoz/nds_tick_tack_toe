@@ -11,7 +11,11 @@ class Grid {
 
       vector<vector<Cell>> getGridArray() const;
 
+      Cell getCell(int posX, int posY) const;
+
       cellMark checkVictoryCondition() const;
+
+      void makeMove(int posX, int posY, cellMark mark);
 
       Grid(int size);
 };
