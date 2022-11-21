@@ -15,7 +15,7 @@ using namespace std;
 #define TOUCH_Y_PIX_STEP 16
 
 enum Turn { Cross, Circle };
-enum GameType { Singleplayer, Multiplayer };
+enum GameMode { Singleplayer, Multiplayer };
 
 static const string emptyCell = "+-+"
 	                            "| |"
@@ -35,6 +35,7 @@ cellMark CheckVictoryCondition(const Grid *grid);
 void ProcessUserInput(touchPosition touch, Grid* grid, Turn *turn, int maxXStretch, int maxYStretch);
 void Renderer(const Grid* grid, PrintConsole *console);
 void fastPrint(int posX, int posY, int printNum);
+void RegisterMove(Grid* grid, Turn* turn, int posX, int posY);
 
 int DetermineXCoords(int pixelX);
 int DetermineYCoords(int pixelY);
@@ -44,11 +45,12 @@ void PrintDebugInfo(PrintConsole *console, touchPosition touch, int maxXStretch,
 //---------------------------------------------------------------------------------
 int main(void) {
 //---------------------------------------------------------------------------------
-    const unsigned int size = 6;
+    const unsigned int size = 3;
 	int maxXStretch = TOUCH_X_BASE_PX + 16 * size;
 	int maxYStretch = TOUCH_Y_BASE_PX + 16 * size;
 	Turn turn = Cross;
 	static const char *enumCellMarkStr[] = { "Empty", "Crosses", "Circles" };
+	GameMode mode;
 
     touchPosition touch;
 
@@ -145,16 +147,19 @@ int main(void) {
 void ProcessUserInput(touchPosition touch, Grid* grid, Turn* turn, int maxXStretch, int maxYStretch) {
 	//if within the grid
 	if((touch.px > TOUCH_X_BASE_PX && touch.px < maxXStretch) && (touch.py > TOUCH_Y_BASE_PX && touch.py < maxYStretch)) {
-		//get cell coordinates
-		Cell* currCell = &(grid->getGridArray()[DetermineXCoords(touch.px)][DetermineYCoords(touch.py)]);
+		RegisterMove(grid, turn, DetermineXCoords(touch.px), DetermineYCoords(touch.py));
+	}
+}
 
-		if(currCell->getMark() == Empty && *turn == Cross) {
-			currCell->setMark(X);
-			*turn = Circle;
-		} else if (currCell->getMark() == Empty && *turn == Circle) {
-			currCell->setMark(O);
-			*turn = Cross;
-		}
+void RegisterMove(Grid* grid, Turn* turn, int posX, int posY) {
+	Cell* currCell = &(grid->getGridArray()[posX][posY]);
+
+	if(currCell->getMark() == Empty && *turn == Cross) {
+		currCell->setMark(X);
+		*turn = Circle;
+	} else if (currCell->getMark() == Empty && *turn == Circle) {
+		currCell->setMark(O);
+		*turn = Cross;
 	}
 }
 
@@ -305,9 +310,3 @@ void PrintDebugInfo(PrintConsole *console, touchPosition touch, int maxXStretch,
 		}
 }
 
-void fastPrint(int posX, int posY, int printNum) {
-	PrintConsole *console = consoleDemoInit(); 
-
-	consoleSetWindow(console, posX, posY, 2, 2);
-	cout << printNum;
-}
