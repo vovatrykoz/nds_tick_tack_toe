@@ -4,6 +4,7 @@ using namespace std;
 #include <stdio.h>
 #include <grid.h>
 #include <string>
+#include <ctime>
 #include <iostream>
 
 #define stringify( name ) #name
@@ -16,6 +17,7 @@ using namespace std;
 
 enum Turn { Cross, Circle };
 enum GameMode { Singleplayer, Multiplayer };
+enum Difficulties { Easy, Hard };
 
 static const string emptyCell = "+-+"
 	                            "| |"
@@ -30,12 +32,12 @@ static const string circledCell = "+-+"
 								  "+-+";
 
 void DrawGrid(Cell **grid, const int size, PrintConsole *console);
-void DrawCell(cellMark mark, int x, int y, PrintConsole *console);
-cellMark CheckVictoryCondition(const Grid *grid);
-void ProcessUserInput(touchPosition touch, Grid* grid, Turn *turn, int maxXStretch, int maxYStretch);
+void DrawCell(CellMark mark, int x, int y, PrintConsole *console);
+bool ProcessUserInput(touchPosition touch, Grid* grid, Turn *turn, int maxXStretch, int maxYStretch);
 void Renderer(const Grid* grid, PrintConsole *console);
 void fastPrint(int posX, int posY, int printNum);
-void RegisterMove(Grid* grid, Turn* turn, int posX, int posY);
+bool RegisterMove(Grid* grid, Turn* turn, int posX, int posY);
+void GenerateAiMove(Difficulties diff, Grid* grid, Turn* turn );
 
 int DetermineXCoords(int pixelX);
 int DetermineYCoords(int pixelY);
@@ -45,12 +47,14 @@ void PrintDebugInfo(PrintConsole *console, touchPosition touch, int maxXStretch,
 //---------------------------------------------------------------------------------
 int main(void) {
 //---------------------------------------------------------------------------------
-    const unsigned int size = 3;
+    const unsigned int size = 10;
 	int maxXStretch = TOUCH_X_BASE_PX + 16 * size;
 	int maxYStretch = TOUCH_Y_BASE_PX + 16 * size;
 	Turn turn = Cross;
 	static const char *enumCellMarkStr[] = { "Empty", "Crosses", "Circles" };
-	//GameMode mode;
+	GameMode mode = Singleplayer;
+	Difficulties diffic = Easy;
+	srand((unsigned) time(NULL));
 
     touchPosition touch;
 
@@ -69,7 +73,7 @@ int main(void) {
 	DrawGrid(grid.getGridArray(), size, console);
 
 	int keys;
-	cellMark winner = Empty;
+	CellMark winner = Empty;
 
 	while(1) 
 	{		
@@ -82,14 +86,14 @@ int main(void) {
 		if(keys == KEY_TOUCH)
 		{
 			Renderer(&grid, console);
-
 			touchRead(&touch);
 
-			PrintDebugInfo(console, touch, maxXStretch, maxYStretch, grid.getGridArray(), grid.getSize());
+			//PrintDebugInfo(console, touch, maxXStretch, maxYStretch, grid.getGridArray(), grid.getSize());
 
 		    if(winner == Empty) {
-				winner = grid.checkVictoryCondition();
-				ProcessUserInput(touch, &grid, &turn, maxXStretch, maxYStretch);
+				if(ProcessUserInput(touch, &grid, &turn, maxXStretch, maxYStretch) && winner == Empty) {
+					winner = grid.checkVictoryCondition();
+				}
 			} else {
 				consoleSetWindow(console, 4, 2, 20, 3);
 				cout << enumCellMarkStr[winner] << " win!";
@@ -100,23 +104,34 @@ int main(void) {
 	return 0;
 }
 
-void ProcessUserInput(touchPosition touch, Grid* grid, Turn* turn, int maxXStretch, int maxYStretch) {
-	//if within the grid
-	if((touch.px > TOUCH_X_BASE_PX && touch.px < maxXStretch) && (touch.py > TOUCH_Y_BASE_PX && touch.py < maxYStretch)) {
-		RegisterMove(grid, turn, DetermineXCoords(touch.px), DetermineYCoords(touch.py));
-	}
+void GenerateAiMove(Difficulties diff, Grid* grid, Turn* turn) {
+	int size = grid->getSize();
+	while(!RegisterMove(grid, turn, rand() % size, rand() % size));
 }
 
-void RegisterMove(Grid* grid, Turn* turn, int posX, int posY) {
-	Cell* currCell = &(grid->getGridArray()[posX][posY]);
-
-	if(currCell->getMark() == Empty && *turn == Cross) {
-		currCell->setMark(X);
-		*turn = Circle;
-	} else if (currCell->getMark() == Empty && *turn == Circle) {
-		currCell->setMark(O);
-		*turn = Cross;
+bool ProcessUserInput(touchPosition touch, Grid* grid, Turn* turn, int maxXStretch, int maxYStretch) {
+	//if within the grid
+	if((touch.px > TOUCH_X_BASE_PX && touch.px < maxXStretch) && (touch.py > TOUCH_Y_BASE_PX && touch.py < maxYStretch)) {
+		return RegisterMove(grid, turn, DetermineXCoords(touch.px), DetermineYCoords(touch.py));
 	}
+
+	return false;
+}
+
+bool RegisterMove(Grid* grid, Turn* turn, int posX, int posY) {
+	CellMark currMark = grid->getGridArray()[posX][posY].getMark();
+
+	if(currMark == Empty && *turn == Cross) {
+		grid->makeMove(posX, posY, X);
+		*turn = Circle;
+		return true;
+	} else if (currMark == Empty && *turn == Circle) {
+		grid->makeMove(posX, posY, O);
+		*turn = Cross;
+		return true;
+	}
+
+	return false;
 }
 
 void Renderer(const Grid *grid, PrintConsole *console) {
@@ -130,7 +145,7 @@ void DrawGrid(Cell **grid, int size, PrintConsole *console) {
 			DrawCell(grid[j][i].getMark(), 5 + 2 * j, 5 + 2 * i, console);
 }
 
-void DrawCell(cellMark mark, int x, int y, PrintConsole *console) {
+void DrawCell(CellMark mark, int x, int y, PrintConsole *console) {
 	consoleSelect(console);
 	consoleSetWindow(console, x, y, 3, 3);
 

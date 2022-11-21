@@ -1,13 +1,13 @@
-enum cellMark { Empty, X, O };
+enum CellMark { Empty, X, O };
 
 class Cell {
     private:
-      cellMark mark;
+      CellMark mark;
 
     public:
-      cellMark getMark() const;
+      CellMark getMark() const;
   
-      void setMark(cellMark mark);
+      void setMark(CellMark mark);
 
       Cell();
 };

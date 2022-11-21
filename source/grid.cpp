@@ -20,7 +20,7 @@ Grid::Grid(int size) : gridSize(size) {
   }
 }
 
-cellMark Grid::checkVictoryCondition() const {
+CellMark Grid::checkVictoryCondition() const {
   int counter;
 
 	//check horizontally
@@ -96,6 +96,10 @@ cellMark Grid::checkVictoryCondition() const {
 	}
 
 	return Empty;
+}
+
+void Grid::makeMove(int posX, int posY, CellMark mark) const {
+	gridArray[posX][posY].setMark(mark);
 }
 
 Grid::~Grid() {

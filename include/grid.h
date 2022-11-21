@@ -10,7 +10,9 @@ class Grid {
 
       Cell** getGridArray() const;
 
-      cellMark checkVictoryCondition() const;
+      CellMark checkVictoryCondition() const;
+
+      void makeMove(int posX, int posY, CellMark mark) const;
 
       Grid(int size);
 

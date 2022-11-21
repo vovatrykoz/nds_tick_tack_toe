@@ -2,10 +2,10 @@
 
 Cell::Cell() : mark(Empty) {};
 
-cellMark Cell::getMark() const {
+CellMark Cell::getMark() const {
     return mark;
 }
 
-void Cell::setMark(cellMark mark) {
+void Cell::setMark(CellMark mark) {
     this->mark = mark;
 }
