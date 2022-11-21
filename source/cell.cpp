@@ -1,4 +1,5 @@
 #include <cell.h>
+#include <iostream> //DEBUG ONLY, REMOVE LATER
 
 Cell::Cell() : mark(Empty) {};
 

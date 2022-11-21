@@ -11,5 +11,7 @@ class Grid {
 
       vector<vector<Cell>> getGridArray() const;
 
+      cellMark checkVictoryCondition() const;
+
       Grid(int size);
 };

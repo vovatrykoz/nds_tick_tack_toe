@@ -40,7 +40,7 @@ void RegisterMove(Grid* grid, Turn* turn, int posX, int posY);
 int DetermineXCoords(int pixelX);
 int DetermineYCoords(int pixelY);
 
-void PrintDebugInfo(PrintConsole *console, touchPosition touch, int maxXStretch, int maxYStretch, vector<vector<Cell>> grid, int size);
+void PrintDebugInfo(PrintConsole *console, touchPosition touch, int maxXStretch, int maxYStretch, vector<vector<Cell>> grid, int size,  const Grid* gr);
 
 //---------------------------------------------------------------------------------
 int main(void) {
@@ -58,7 +58,9 @@ int main(void) {
 
 	Grid grid(size);
 
-	DrawGrid(grid.getGridArray(), size, console);
+	Renderer(&grid, console);
+
+	cout << &(grid.getGridArray()[2][1]);
 
 	int keys;
 	cellMark winner = Empty;
@@ -77,10 +79,10 @@ int main(void) {
 
 			touchRead(&touch);
 
-			PrintDebugInfo(console, touch, maxXStretch, maxYStretch, grid.getGridArray(), grid.getSize());
+			PrintDebugInfo(console, touch, maxXStretch, maxYStretch, grid.getGridArray(), grid.getSize(), &grid);
 
 		    if(winner == Empty) {
-				winner = CheckVictoryCondition(&grid);
+				winner = grid.checkVictoryCondition();
 				ProcessUserInput(touch, &grid, &turn, maxXStretch, maxYStretch);
 			} else {
 				consoleSetWindow(console, 4, 2, 20, 3);
@@ -94,19 +96,19 @@ int main(void) {
 
 void ProcessUserInput(touchPosition touch, Grid* grid, Turn* turn, int maxXStretch, int maxYStretch) {
 	//if within the grid
-	if((touch.px > TOUCH_X_BASE_PX && touch.px < maxXStretch) && (touch.py > TOUCH_Y_BASE_PX && touch.py < maxYStretch)) {
+	cout << &(grid->getGridArray()[2][1]);
+	if((touch.px > TOUCH_X_BASE_PX && touch.px < maxXStretch) && (touch.py > TOUCH_Y_BASE_PX && touch.py < maxYStretch))
 		RegisterMove(grid, turn, DetermineXCoords(touch.px), DetermineYCoords(touch.py));
-	}
 }
 
 void RegisterMove(Grid* grid, Turn* turn, int posX, int posY) {
-	Cell* currCell = &(grid->getGridArray()[posX][posY]);
+	//Cell* currCell = &(grid->getGridArray()[posX][posY]);
 
-	if(currCell->getMark() == Empty && *turn == Cross) {
-		currCell->setMark(X);
+	if(grid->getGridArray()[posX][posY].getMark() == Empty && *turn == Cross) {
+		grid->getGridArray()[posX][posY].setMark(X);
 		*turn = Circle;
-	} else if (currCell->getMark() == Empty && *turn == Circle) {
-		currCell->setMark(O);
+	} else if (grid->getGridArray()[posX][posY].getMark() == Empty && *turn == Circle) {
+		grid->getGridArray()[posX][posY].setMark(O);
 		*turn = Cross;
 	}
 }
@@ -114,86 +116,6 @@ void RegisterMove(Grid* grid, Turn* turn, int posX, int posY) {
 void Renderer(const Grid *grid, PrintConsole *console) {
 	consoleClear();
 	DrawGrid(grid->getGridArray(), grid->getSize(), console);
-}
-
-cellMark CheckVictoryCondition(const Grid *grid) {
-	int counter;
-	const int size = grid->getSize();
-	vector<vector<Cell>> gridArr = grid->getGridArray();
-
-	//check horizontally
-	for(int i = 0; i < size; i++) {
-		counter = 0;
-		for(int j = 0; j < size - 1; j++) {
-			if(gridArr[j][i].getMark() == Empty || gridArr[j + 1][i].getMark() == Empty) break;
-
-			if(gridArr[j][i].getMark() == gridArr[j + 1][i].getMark()) {
-				counter++;
-
-			    if(counter == size - 1) {
-				    return gridArr[j][i].getMark();
-				}
-			}
-		}
-	}
-
-	//check vertically
-	for(int i = 0; i < size; i++) {
-		counter = 0;
-		for(int j = 0; j < size - 1; j++) {
-			if(gridArr[i][j].getMark() == Empty || gridArr[i][j + 1].getMark() == Empty) break;
-			//fastPrint(0 + counter, 5, counter);
-			if(gridArr[i][j].getMark() == gridArr[i][j + 1].getMark()) {
-				counter++;
-
-			    if(counter == size - 1) {
-				    return gridArr[i][j].getMark();
-				}
-			}
-		}
-	}
-
-	//reset the counter
-	counter = 0;
-
-	//check diagonally (left to right)
-	for(int j = 0, i = 0; j < size - 1; j++) {
-		if(gridArr[j][i].getMark() == Empty || gridArr[j + 1][i + 1].getMark() == Empty) {
-			counter = 0;
-			break;
-		}
-
-		if(gridArr[j][i].getMark() == gridArr[j + 1][i + 1].getMark()) {
-			counter++;
-
-			if(counter == size - 1) {
-				return gridArr[j][i].getMark();
-			}
-		}
-		i++;
-	}
-
-	//reset the counter
-	counter = 0;
-
-	//check diagonally (right to left)
-	for(int j = size - 1, i = 0; j >= 0; j--) {
-		if(gridArr[j][i].getMark() == Empty || gridArr[j - 1][i + 1].getMark() == Empty) {
-			counter = 0;
-			break;
-		} 
-
-		if(gridArr[j][i].getMark() == gridArr[j - 1][i + 1].getMark()) {
-			counter++;
-
-			if(counter == size - 1) {
-				return gridArr[j][i].getMark();
-			}
-		}
-		i++;
-	}
-
-	return Empty;
 }
 
 void DrawGrid(vector<vector<Cell>> grid, int size, PrintConsole *console) {
@@ -230,10 +152,10 @@ int DetermineYCoords(int pixelY) {
 	return (pixelY - TOUCH_Y_BASE_PX) / TOUCH_Y_PIX_STEP;
 }
 
-void PrintDebugInfo(PrintConsole *console, touchPosition touch, int maxXStretch, int maxYStretch, vector<vector<Cell>> grid, int size) {
+void PrintDebugInfo(PrintConsole *console, touchPosition touch, int maxXStretch, int maxYStretch, vector<vector<Cell>> grid, int size, const Grid* gr) {
 	consoleSetWindow(console, 20, 20, 10, 10);
 
-	cout << &grid;
+	cout << &(gr->getGridArray()[0][0]);
 
 	consoleSetWindow(console, 0, 0, 30, 10);
 
