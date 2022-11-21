@@ -29,7 +29,7 @@ static const string circledCell = "+-+"
 								  "|o|"
 								  "+-+";
 
-void DrawGrid(Cell **grid, const int size, PrintConsole *console);
+void DrawGrid(vector<vector<Cell>> grid, const int size, PrintConsole *console);
 void DrawCell(cellMark mark, int x, int y, PrintConsole *console);
 cellMark CheckVictoryCondition(const Grid *grid);
 void ProcessUserInput(touchPosition touch, Grid* grid, Turn *turn, int maxXStretch, int maxYStretch);
@@ -40,7 +40,7 @@ void RegisterMove(Grid* grid, Turn* turn, int posX, int posY);
 int DetermineXCoords(int pixelX);
 int DetermineYCoords(int pixelY);
 
-void PrintDebugInfo(PrintConsole *console, touchPosition touch, int maxXStretch, int maxYStretch, Cell** grid, int size);
+void PrintDebugInfo(PrintConsole *console, touchPosition touch, int maxXStretch, int maxYStretch, vector<vector<Cell>> grid, int size);
 
 //---------------------------------------------------------------------------------
 int main(void) {
@@ -57,14 +57,6 @@ int main(void) {
 	PrintConsole *console = consoleDemoInit(); 
 
 	Grid grid(size);
-
-	if(!grid.getGridArray()) {
-		consoleSelect(console);
-		consoleSetWindow(console, 0, 0, 30, 1);
-
-		cout << "Grid memory allocation failure";
-		exit(EXIT_FAILURE);		  
-	}
 
 	DrawGrid(grid.getGridArray(), size, console);
 
@@ -171,7 +163,7 @@ void Renderer(const Grid *grid, PrintConsole *console) {
 cellMark CheckVictoryCondition(const Grid *grid) {
 	int counter;
 	const int size = grid->getSize();
-	Cell **gridArr = grid->getGridArray();
+	vector<vector<Cell>> gridArr = grid->getGridArray();
 
 	//check horizontally
 	for(int i = 0; i < size; i++) {
@@ -248,7 +240,7 @@ cellMark CheckVictoryCondition(const Grid *grid) {
 	return Empty;
 }
 
-void DrawGrid(Cell **grid, int size, PrintConsole *console) {
+void DrawGrid(vector<vector<Cell>> grid, int size, PrintConsole *console) {
 	for (int i = 0; i < size; i++) {
 		for (int j = 0; j < size; j++) {
 			DrawCell(grid[j][i].getMark(), 5 + 2 * j, 5 + 2 * i, console);
@@ -284,10 +276,10 @@ int DetermineYCoords(int pixelY) {
 	return (pixelY - TOUCH_Y_BASE_PX) / TOUCH_Y_PIX_STEP;
 }
 
-void PrintDebugInfo(PrintConsole *console, touchPosition touch, int maxXStretch, int maxYStretch, Cell** grid, int size) {
+void PrintDebugInfo(PrintConsole *console, touchPosition touch, int maxXStretch, int maxYStretch, vector<vector<Cell>> grid, int size) {
 	consoleSetWindow(console, 20, 20, 10, 10);
 
-	cout << grid;
+	cout << &grid;
 
 	consoleSetWindow(console, 0, 0, 30, 10);
 

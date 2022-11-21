@@ -1,16 +1,15 @@
 #include "cell.h"
+#include <vector>
 
 class Grid {
     private:
       const int gridSize;
-      Cell** gridArray;
+      vector<vector<Cell>> gridArray;
 
     public:
       const int getSize() const;
 
-      Cell** getGridArray() const;
+      vector<vector<Cell>> getGridArray() const;
 
       Grid(int size);
-
-      ~Grid();
 };
