@@ -10,6 +10,8 @@ class Grid {
 
       Cell** getGridArray() const;
 
+      cellMark checkVictoryCondition() const;
+
       Grid(int size);
 
       ~Grid();

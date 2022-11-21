@@ -88,7 +88,7 @@ int main(void) {
 			PrintDebugInfo(console, touch, maxXStretch, maxYStretch, grid.getGridArray(), grid.getSize());
 
 		    if(winner == Empty) {
-				winner = CheckVictoryCondition(&grid);
+				winner = grid.checkVictoryCondition();
 				ProcessUserInput(touch, &grid, &turn, maxXStretch, maxYStretch);
 			} else {
 				consoleSetWindow(console, 4, 2, 20, 3);
@@ -124,86 +124,6 @@ void RegisterMove(Grid* grid, Turn* turn, int posX, int posY) {
 void Renderer(const Grid *grid, PrintConsole *console) {
 	consoleClear();
 	DrawGrid(grid->getGridArray(), grid->getSize(), console);
-}
-
-cellMark CheckVictoryCondition(const Grid *grid) {
-	int counter;
-	const int size = grid->getSize();
-	Cell **gridArr = grid->getGridArray();
-
-	//check horizontally
-	for(int i = 0; i < size; i++) {
-		counter = 0;
-		for(int j = 0; j < size - 1; j++) {
-			if(gridArr[j][i].getMark() == Empty || gridArr[j + 1][i].getMark() == Empty) break;
-
-			if(gridArr[j][i].getMark() == gridArr[j + 1][i].getMark()) {
-				counter++;
-
-			    if(counter == size - 1) {
-				    return gridArr[j][i].getMark();
-				}
-			}
-		}
-	}
-
-	//check vertically
-	for(int i = 0; i < size; i++) {
-		counter = 0;
-		for(int j = 0; j < size - 1; j++) {
-			if(gridArr[i][j].getMark() == Empty || gridArr[i][j + 1].getMark() == Empty) break;
-			//fastPrint(0 + counter, 5, counter);
-			if(gridArr[i][j].getMark() == gridArr[i][j + 1].getMark()) {
-				counter++;
-
-			    if(counter == size - 1) {
-				    return gridArr[i][j].getMark();
-				}
-			}
-		}
-	}
-
-	//reset the counter
-	counter = 0;
-
-	//check diagonally (left to right)
-	for(int j = 0, i = 0; j < size - 1; j++) {
-		if(gridArr[j][i].getMark() == Empty || gridArr[j + 1][i + 1].getMark() == Empty) {
-			counter = 0;
-			break;
-		}
-
-		if(gridArr[j][i].getMark() == gridArr[j + 1][i + 1].getMark()) {
-			counter++;
-
-			if(counter == size - 1) {
-				return gridArr[j][i].getMark();
-			}
-		}
-		i++;
-	}
-
-	//reset the counter
-	counter = 0;
-
-	//check diagonally (right to left)
-	for(int j = size - 1, i = 0; j >= 0; j--) {
-		if(gridArr[j][i].getMark() == Empty || gridArr[j - 1][i + 1].getMark() == Empty) {
-			counter = 0;
-			break;
-		} 
-
-		if(gridArr[j][i].getMark() == gridArr[j - 1][i + 1].getMark()) {
-			counter++;
-
-			if(counter == size - 1) {
-				return gridArr[j][i].getMark();
-			}
-		}
-		i++;
-	}
-
-	return Empty;
 }
 
 void DrawGrid(Cell **grid, int size, PrintConsole *console) {
