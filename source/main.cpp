@@ -87,11 +87,8 @@ int main(void) {
 				cout << enumCellMarkStr[winner] << " win!";
 			}
 		}
-
 		swiWaitForVBlank();
 	}
-
-
 	return 0;
 }
 
