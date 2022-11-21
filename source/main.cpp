@@ -34,6 +34,7 @@ void DrawCell(cellMark mark, int x, int y, PrintConsole *console);
 cellMark CheckVictoryCondition(const Grid *grid);
 void ProcessUserInput(touchPosition touch, Grid* grid, Turn *turn, int maxXStretch, int maxYStretch);
 void Renderer(const Grid* grid, PrintConsole *console);
+void fastPrint(int posX, int posY, int printNum);
 
 int DetermineXCoords(int pixelX);
 int DetermineYCoords(int pixelY);
@@ -43,8 +44,7 @@ void PrintDebugInfo(PrintConsole *console, touchPosition touch, int maxXStretch,
 //---------------------------------------------------------------------------------
 int main(void) {
 //---------------------------------------------------------------------------------
-
-    const unsigned int size = 3;
+    const unsigned int size = 6;
 	int maxXStretch = TOUCH_X_BASE_PX + 16 * size;
 	int maxYStretch = TOUCH_Y_BASE_PX + 16 * size;
 	Turn turn = Cross;
@@ -189,12 +189,12 @@ cellMark CheckVictoryCondition(const Grid *grid) {
 		counter = 0;
 		for(int j = 0; j < size - 1; j++) {
 			if(gridArr[i][j].getMark() == Empty || gridArr[i][j + 1].getMark() == Empty) break;
-
+			//fastPrint(0 + counter, 5, counter);
 			if(gridArr[i][j].getMark() == gridArr[i][j + 1].getMark()) {
 				counter++;
 
 			    if(counter == size - 1) {
-				    return gridArr[j][i].getMark();
+				    return gridArr[i][j].getMark();
 				}
 			}
 		}
@@ -208,7 +208,7 @@ cellMark CheckVictoryCondition(const Grid *grid) {
 		if(gridArr[j][i].getMark() == Empty || gridArr[j + 1][i + 1].getMark() == Empty) {
 			counter = 0;
 			break;
-		} 
+		}
 
 		if(gridArr[j][i].getMark() == gridArr[j + 1][i + 1].getMark()) {
 			counter++;
@@ -303,4 +303,11 @@ void PrintDebugInfo(PrintConsole *console, touchPosition touch, int maxXStretch,
 	    for(int j = 0; j < size; j++) {
 			cout << j << i << "->" << grid[j][i].getMark() << "\n";
 		}
+}
+
+void fastPrint(int posX, int posY, int printNum) {
+	PrintConsole *console = consoleDemoInit(); 
+
+	consoleSetWindow(console, posX, posY, 2, 2);
+	cout << printNum;
 }
