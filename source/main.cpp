@@ -241,11 +241,9 @@ cellMark CheckVictoryCondition(const Grid *grid) {
 }
 
 void DrawGrid(vector<vector<Cell>> grid, int size, PrintConsole *console) {
-	for (int i = 0; i < size; i++) {
-		for (int j = 0; j < size; j++) {
+	for (int i = 0; i < size; i++)
+		for (int j = 0; j < size; j++)
 			DrawCell(grid[j][i].getMark(), 5 + 2 * j, 5 + 2 * i, console);
-		}
-	}
 }
 
 void DrawCell(cellMark mark, int x, int y, PrintConsole *console) {
