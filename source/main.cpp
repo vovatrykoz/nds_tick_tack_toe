@@ -50,7 +50,7 @@ int main(void) {
 	int maxYStretch = TOUCH_Y_BASE_PX + 16 * size;
 	Turn turn = Cross;
 	static const char *enumCellMarkStr[] = { "Empty", "Crosses", "Circles" };
-	GameMode mode;
+	//GameMode mode;
 
     touchPosition touch;
 
