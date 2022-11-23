@@ -47,7 +47,7 @@ void PrintDebugInfo(PrintConsole *console, touchPosition touch, int maxXStretch,
 //---------------------------------------------------------------------------------
 int main(void) {
 //---------------------------------------------------------------------------------
-    const unsigned int size = 10;
+    const unsigned int size = 3;
 	int maxXStretch = TOUCH_X_BASE_PX + 16 * size;
 	int maxYStretch = TOUCH_Y_BASE_PX + 16 * size;
 	Turn turn = Cross;

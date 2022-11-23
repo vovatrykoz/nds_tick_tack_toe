@@ -21,78 +21,103 @@ Grid::Grid(int size) : gridSize(size) {
 }
 
 CellMark Grid::checkVictoryCondition() const {
-  int counter;
-
+	CellMark res;
 	//check horizontally
 	for(int i = 0; i < gridSize; i++) {
-		counter = 0;
-		for(int j = 0; j < gridSize - 1; j++) {
-			if(gridArray[j][i].getMark() == Empty || gridArray[j + 1][i].getMark() == Empty) break;
-
-			if(gridArray[j][i].getMark() == gridArray[j + 1][i].getMark()) {
-				counter++;
-
-			    if(counter == gridSize - 1) {
-				    return gridArray[j][i].getMark();
-				}
-			}
-		}
+		res = checkVictoryRow(i);
+		if(res != Empty)
+		    return res;
 	}
 
 	//check vertically
 	for(int i = 0; i < gridSize; i++) {
-		counter = 0;
-		for(int j = 0; j < gridSize - 1; j++) {
-			if(gridArray[i][j].getMark() == Empty || gridArray[i][j + 1].getMark() == Empty) break;
-			//fastPrint(0 + counter, 5, counter);
-			if(gridArray[i][j].getMark() == gridArray[i][j + 1].getMark()) {
-				counter++;
+		res = checkVictoryCol(i);
+		if(res != Empty)
+		    return res;
+	}
 
-			    if(counter == gridSize - 1) {
-				    return gridArray[i][j].getMark();
-				}
+	res = checkVictorySouthEastDiag();
+	if(res != Empty)
+		return res;
+
+	res = checkVictorySouthWestDiag();
+
+	return res;
+}
+
+CellMark Grid::checkVictoryRow(int rowPos) const {
+	int counter = 0;
+
+	for(int i = 0; i < gridSize - 1; i++) {
+		if(gridArray[i][rowPos].getMark() == Empty || gridArray[i + 1][rowPos].getMark() == Empty) break;
+
+		if(gridArray[i][rowPos].getMark() == gridArray[i + 1][rowPos].getMark()) {
+			counter++;
+
+			if(counter == gridSize - 1) {
+				return gridArray[i][rowPos].getMark();
 			}
 		}
 	}
 
-	//reset the counter
-	counter = 0;
+	return Empty;
+}
+
+CellMark Grid::checkVictoryCol(int colPos) const {
+	int counter = 0;
+
+	for(int i = 0; i < gridSize - 1; i++) {
+		if(gridArray[colPos][i].getMark() == Empty || gridArray[colPos][i + 1].getMark() == Empty) break;
+
+		if(gridArray[colPos][i].getMark() == gridArray[colPos][i + 1].getMark()) {
+			counter++;
+
+			if(counter == gridSize - 1) {
+				return gridArray[colPos][i].getMark();
+			}
+		}
+	}
+
+	return Empty;
+}
+
+CellMark Grid::checkVictorySouthEastDiag() const {
+	int counter = 0;
 
 	//check diagonally (left to right)
-	for(int j = 0, i = 0; j < gridSize - 1; j++) {
-		if(gridArray[j][i].getMark() == Empty || gridArray[j + 1][i + 1].getMark() == Empty) {
-			counter = 0;
+	for(int i = 0, j = 0; i < gridSize - 1; i++) {
+		if(gridArray[i][j].getMark() == Empty || gridArray[i + 1][j + 1].getMark() == Empty)
 			break;
-		}
 
-		if(gridArray[j][i].getMark() == gridArray[j + 1][i + 1].getMark()) {
+		if(gridArray[i][j].getMark() == gridArray[i + 1][j + 1].getMark()) {
 			counter++;
 
 			if(counter == gridSize - 1) {
-				return gridArray[j][i].getMark();
+				return gridArray[i][j].getMark();
 			}
 		}
-		i++;
+		j++;
 	}
 
-	//reset the counter
-	counter = 0;
+	return Empty;
+}
+
+CellMark Grid::checkVictorySouthWestDiag() const {
+	int counter = 0;
 
 	//check diagonally (right to left)
-	for(int j = gridSize - 1, i = 0; j >= 0; j--) {
-		if(gridArray[j][i].getMark() == Empty || gridArray[j - 1][i + 1].getMark() == Empty) {
-			counter = 0;
+	for(int i = gridSize - 1, j = 0; i >= 0; i--) {
+		if(gridArray[i][j].getMark() == Empty || gridArray[i - 1][j + 1].getMark() == Empty)
 			break;
-		} 
 
-		if(gridArray[j][i].getMark() == gridArray[j - 1][i + 1].getMark()) {
+		if(gridArray[i][j].getMark() == gridArray[i - 1][j + 1].getMark()) {
 			counter++;
 
 			if(counter == gridSize - 1) {
-				return gridArray[j][i].getMark();
+				return gridArray[i][j].getMark();
 			}
 		}
-		i++;
+		j++;
 	}
 
 	return Empty;
