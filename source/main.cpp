@@ -32,6 +32,7 @@ static const string circledCell = "+-+"
 								  "|o|"
 								  "+-+";
 
+
 void DrawGrid(Cell **grid, const int size, PrintConsole *console);
 void DrawCell(CellMark mark, int x, int y, PrintConsole *console);
 bool ProcessUserInput(touchPosition touch, Grid* grid, Turn *turn, int maxXStretch, int maxYStretch, vector<supervElement> *gridSuperv);
@@ -42,6 +43,7 @@ void GenerateAiMove(Difficulties diff, Grid* grid, Turn* turn );
 
 unsigned int DetermineXCoords(int pixelX);
 unsigned int DetermineYCoords(int pixelY);
+
 
 void PrintDebugInfo(PrintConsole *console, touchPosition touch, int maxXStretch, int maxYStretch, Cell** grid, int size, vector<supervElement> gridSuperv);
 
@@ -64,15 +66,7 @@ int main(void) {
 
 	Grid grid(size);
 
-	if(!grid.getGridArray()) {
-		consoleSelect(console);
-		consoleSetWindow(console, 0, 0, 30, 1);
-
-		cout << "Grid memory allocation failure";
-		exit(EXIT_FAILURE);		  
-	}
-
-	DrawGrid(grid.getGridArray(), size, console);
+	Renderer(&grid, console);
 
 	int keys;
 	CellMark winner = Empty;
@@ -182,7 +176,7 @@ unsigned int DetermineYCoords(int pixelY) {
 void PrintDebugInfo(PrintConsole *console, touchPosition touch, int maxXStretch, int maxYStretch, Cell** grid, int size, vector<supervElement> gridSuperv) {
 	consoleSetWindow(console, 20, 20, 10, 10);
 
-	cout << grid;
+	cout << &(gr->getGridArray()[0][0]);
 
 	consoleSetWindow(console, 0, 0, 30, 10);
 

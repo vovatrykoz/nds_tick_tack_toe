@@ -4,16 +4,19 @@
 class Grid {
     private:
       const int gridSize;
+
       Cell** gridArray;
       GridSupervisor supervisor;
 
     public:
       const int getSize() const;
 
-      Cell** getGridArray() const;
+      vector<vector<Cell>> getGridArray() const;
 
-      Grid(int size);
+      Cell getCell(int posX, int posY) const;
 
+      cellMark checkVictoryCondition() const;
+      
       CellMark checkVictoryCondition() const;
 
       CellMark checkVictoryRow(int rowPos) const;
