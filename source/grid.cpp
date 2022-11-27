@@ -68,6 +68,8 @@ CellMark Grid::checkVictoryRow(int rowPos) const {
 			if(counter == gridSize - 1) {
 				return gridArray[i][rowPos].getMark();
 			}
+		} else {
+			break;
 		}
 	}
 
@@ -89,6 +91,8 @@ CellMark Grid::checkVictoryCol(int colPos) const {
 			if(counter == gridSize - 1) {
 				return gridArray[colPos][i].getMark();
 			}
+		} else {
+			break;
 		}
 	}
 
@@ -112,6 +116,8 @@ CellMark Grid::checkVictorySouthEastDiag() const {
 			if(counter == gridSize - 1) {
 				return gridArray[i][j].getMark();
 			}
+		} else {
+			break;
 		}
 		j++;
 	}
@@ -136,6 +142,8 @@ CellMark Grid::checkVictorySouthWestDiag() const {
 			if(counter == gridSize - 1) {
 				return gridArray[i][j].getMark();
 			}
+		} else {
+			break;
 		}
 		j++;
 	}
