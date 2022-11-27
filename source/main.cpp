@@ -11,11 +11,9 @@ using namespace std;
 #define stringify( name ) #name
 #define GRID_OFFSET 5
 //position of the first pixel of the first square
-#define TOUCH_X_BASE_PX 45
-#define TOUCH_Y_BASE_PX 45
+#define TOUCH_BASE_PX 45
 //define one step in terms of pixels
-#define TOUCH_X_PIX_STEP 16
-#define TOUCH_Y_PIX_STEP 16
+#define TOUCH_PIX_STEP 16
 
 enum Turn { Cross, Circle };
 enum GameMode { Singleplayer, Multiplayer };
@@ -42,8 +40,7 @@ void fastPrint(int posX, int posY, int printNum);
 bool RegisterMove(Grid* grid, Turn* turn, unsigned int posX, unsigned int posY);
 void GenerateAiMove(Difficulties diff, Grid* grid, Turn* turn );
 
-unsigned int DetermineXCoords(int pixelX);
-unsigned int DetermineYCoords(int pixelY);
+int DetermineLineCoord(int pixel);
 
 
 void PrintDebugInfo(PrintConsole *console, touchPosition touch, int maxXStretch, int maxYStretch, Cell** grid, int size, vector<supervElement> gridSuperv);
@@ -51,9 +48,9 @@ void PrintDebugInfo(PrintConsole *console, touchPosition touch, int maxXStretch,
 //---------------------------------------------------------------------------------
 int main(void) {
 //---------------------------------------------------------------------------------
-    const unsigned int size = 3;
-	int maxXStretch = TOUCH_X_BASE_PX + 16 * size;
-	int maxYStretch = TOUCH_Y_BASE_PX + 16 * size;
+    const int size = 3;
+	int maxXStretch, maxYStretch;
+	maxXStretch = maxYStretch = TOUCH_BASE_PX + 16 * size;
 	Turn turn = Cross;
 	static const char *enumCellMarkStr[] = { "Empty", "Crosses", "Circles" };
 	//GameMode mode = Singleplayer;
@@ -108,9 +105,9 @@ void GenerateAiMove(Difficulties diff, Grid* grid, Turn* turn) {
 
 bool ProcessUserInput(touchPosition touch, Grid* grid, Turn* turn, int maxXStretch, int maxYStretch, vector<supervElement> *gridSuperv) {
 	//if within the grid
-	if((touch.px > TOUCH_X_BASE_PX && touch.px < maxXStretch) && (touch.py > TOUCH_Y_BASE_PX && touch.py < maxYStretch)) {
-		unsigned int posX = DetermineXCoords(touch.px);
-		unsigned int posY = DetermineYCoords(touch.py);
+	if((touch.px > TOUCH_BASE_PX && touch.px < maxXStretch) && (touch.py > TOUCH_BASE_PX && touch.py < maxYStretch)) {
+		unsigned int posX = DetermineLineCoord(touch.px);
+		unsigned int posY = DetermineLineCoord(touch.py);
 		if(RegisterMove(grid, turn, posX, posY)) {
 			gridSuperv->push_back({posX + posY * grid->getSize(), Winnable});
 			return true;
@@ -166,12 +163,8 @@ void DrawCell(CellMark mark, int x, int y, PrintConsole *console) {
 	}	
 }
 
-unsigned int DetermineXCoords(int pixelX) {
-	return (pixelX - TOUCH_X_BASE_PX) / TOUCH_X_PIX_STEP;
-}
-
-unsigned int DetermineYCoords(int pixelY) {
-	return (pixelY - TOUCH_Y_BASE_PX) / TOUCH_Y_PIX_STEP;
+int DetermineLineCoord(int pixel) {
+	return (pixel - TOUCH_BASE_PX) / TOUCH_PIX_STEP;
 }
 
 void PrintDebugInfo(PrintConsole *console, touchPosition touch, int maxXStretch, int maxYStretch, Cell** grid, int size, vector<supervElement> gridSuperv) {
@@ -186,15 +179,15 @@ void PrintDebugInfo(PrintConsole *console, touchPosition touch, int maxXStretch,
 	cout << touch.py;
 	cout << "\n";
 
-	if((touch.px > TOUCH_X_BASE_PX && touch.px < maxXStretch) && (touch.py > TOUCH_Y_BASE_PX && touch.py < maxYStretch)) {
-		cout << DetermineXCoords(touch.px);
+	if((touch.px > TOUCH_BASE_PX && touch.px < maxXStretch) && (touch.py > TOUCH_BASE_PX && touch.py < maxYStretch)) {
+		cout << DetermineLineCoord(touch.px);
 		cout << "\n";
-		cout << DetermineYCoords(touch.py);
+		cout << DetermineLineCoord(touch.py);
 	}
 
 	consoleSetWindow(console, 25, 0, 30, 30);
 
-	for(int i = 0; i < gridSuperv.size(); i++)
+	for(unsigned int i = 0; i < gridSuperv.size(); i++)
 		cout << gridSuperv[i].compId;
 /*
 	for(int i = 0; i < size; i++)
