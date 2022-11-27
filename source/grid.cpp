@@ -62,15 +62,14 @@ CellMark Grid::checkVictoryRow(int rowPos) const {
 	for(int i = 0; i < gridSize - 1; i++) {
 		if(gridArray[i + 1][rowPos].getMark() == Empty) break;
 
-		if(gridArray[i][rowPos].getMark() == gridArray[i + 1][rowPos].getMark()) {
+		if(gridArray[i][rowPos].getMark() == gridArray[i + 1][rowPos].getMark())
 			counter++;
-
-			if(counter == gridSize - 1) {
-				return gridArray[i][rowPos].getMark();
-			}
-		} else {
+		else 
 			break;
-		}
+	}
+
+	if(counter == gridSize - 1) {
+		return gridArray[counter][rowPos].getMark();
 	}
 
 	return Empty;
@@ -85,15 +84,14 @@ CellMark Grid::checkVictoryCol(int colPos) const {
 	for(int i = 0; i < gridSize - 1; i++) {
 		if(gridArray[colPos][i + 1].getMark() == Empty) break;
 
-		if(gridArray[colPos][i].getMark() == gridArray[colPos][i + 1].getMark()) {
+		if(gridArray[colPos][i].getMark() == gridArray[colPos][i + 1].getMark())
 			counter++;
-
-			if(counter == gridSize - 1) {
-				return gridArray[colPos][i].getMark();
-			}
-		} else {
+		else
 			break;
-		}
+	}
+
+	if(counter == gridSize - 1) {
+		return gridArray[colPos][counter].getMark();
 	}
 
 	return Empty;
@@ -110,16 +108,16 @@ CellMark Grid::checkVictorySouthEastDiag() const {
 		if(gridArray[i + 1][j + 1].getMark() == Empty)
 			break;
 
-		if(gridArray[i][j].getMark() == gridArray[i + 1][j + 1].getMark()) {
+		if(gridArray[i][j].getMark() == gridArray[i + 1][j + 1].getMark())
 			counter++;
-
-			if(counter == gridSize - 1) {
-				return gridArray[i][j].getMark();
-			}
-		} else {
+		else
 			break;
-		}
+
 		j++;
+	}
+
+	if(counter == gridSize - 1) {
+		return gridArray[0][0].getMark();
 	}
 
 	return Empty;
@@ -136,16 +134,16 @@ CellMark Grid::checkVictorySouthWestDiag() const {
 		if(gridArray[i - 1][j + 1].getMark() == Empty)
 			break;
 
-		if(gridArray[i][j].getMark() == gridArray[i - 1][j + 1].getMark()) {
+		if(gridArray[i][j].getMark() == gridArray[i - 1][j + 1].getMark())
 			counter++;
-
-			if(counter == gridSize - 1) {
-				return gridArray[i][j].getMark();
-			}
-		} else {
+		else
 			break;
-		}
+
 		j++;
+	}
+
+	if(counter == gridSize - 1) {
+		return gridArray[0][counter].getMark();
 	}
 
 	return Empty;
