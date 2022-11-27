@@ -8,5 +8,3 @@ class GridSupervisor {
     public:
         void processSubElementAt(unsigned int posX, unsigned int posY, unsigned int gridSize);
 };
-
-#endif

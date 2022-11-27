@@ -9,14 +9,14 @@ class Grid {
       GridSupervisor supervisor;
 
     public:
+      Grid(int size);
+      
       const int getSize() const;
 
-      vector<vector<Cell>> getGridArray() const;
+      Cell** getGridArray() const;
 
       Cell getCell(int posX, int posY) const;
 
-      cellMark checkVictoryCondition() const;
-      
       CellMark checkVictoryCondition() const;
 
       CellMark checkVictoryRow(int rowPos) const;

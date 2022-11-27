@@ -13,6 +13,7 @@ using namespace std;
 //position of the first pixel of the first square
 #define TOUCH_X_BASE_PX 45
 #define TOUCH_Y_BASE_PX 45
+//define one step in terms of pixels
 #define TOUCH_X_PIX_STEP 16
 #define TOUCH_Y_PIX_STEP 16
 
@@ -176,7 +177,7 @@ unsigned int DetermineYCoords(int pixelY) {
 void PrintDebugInfo(PrintConsole *console, touchPosition touch, int maxXStretch, int maxYStretch, Cell** grid, int size, vector<supervElement> gridSuperv) {
 	consoleSetWindow(console, 20, 20, 10, 10);
 
-	cout << &(gr->getGridArray()[0][0]);
+	cout << grid;
 
 	consoleSetWindow(console, 0, 0, 30, 10);
 
@@ -204,4 +205,3 @@ void PrintDebugInfo(PrintConsole *console, touchPosition touch, int maxXStretch,
 	
 	//cout << gridSuperv[2].compId;
 }
-
