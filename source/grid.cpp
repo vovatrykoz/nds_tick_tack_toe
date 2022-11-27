@@ -56,7 +56,7 @@ Cell Grid::getCell(int posX, int posY) const {
 CellMark Grid::checkVictoryRow(int rowPos) const {
 	int counter = 0;
 
-	if(gridArray[gridSize - 1][rowPos].getMark() == Empty) 
+	if(gridArray[0][rowPos].getMark() == Empty) 
 	    return Empty;
 
 	for(int i = 0; i < gridSize - 1; i++) {
@@ -77,7 +77,7 @@ CellMark Grid::checkVictoryRow(int rowPos) const {
 CellMark Grid::checkVictoryCol(int colPos) const {
 	int counter = 0;
 
-	if(gridArray[colPos][gridSize - 1].getMark() == Empty) 
+	if(gridArray[colPos][0].getMark() == Empty) 
 	    return Empty;
 
 	for(int i = 0; i < gridSize - 1; i++) {
