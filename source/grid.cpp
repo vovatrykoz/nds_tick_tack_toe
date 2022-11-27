@@ -21,7 +21,7 @@ Cell** Grid::getGridArray() const {
 }
 
 GridSupervisor Grid::getGridSuper() const {
-	return supervisor;
+  return supervisor;
 }
 
 CellMark Grid::checkVictoryCondition() const {
@@ -56,8 +56,11 @@ Cell Grid::getCell(int posX, int posY) const {
 CellMark Grid::checkVictoryRow(int rowPos) const {
 	int counter = 0;
 
+	if(gridArray[gridSize - 1][rowPos].getMark() == Empty) 
+	    return Empty;
+
 	for(int i = 0; i < gridSize - 1; i++) {
-		if(gridArray[i][rowPos].getMark() == Empty || gridArray[i + 1][rowPos].getMark() == Empty) break;
+		if(gridArray[i + 1][rowPos].getMark() == Empty) break;
 
 		if(gridArray[i][rowPos].getMark() == gridArray[i + 1][rowPos].getMark()) {
 			counter++;
@@ -74,8 +77,11 @@ CellMark Grid::checkVictoryRow(int rowPos) const {
 CellMark Grid::checkVictoryCol(int colPos) const {
 	int counter = 0;
 
+	if(gridArray[colPos][gridSize - 1].getMark() == Empty) 
+	    return Empty;
+
 	for(int i = 0; i < gridSize - 1; i++) {
-		if(gridArray[colPos][i].getMark() == Empty || gridArray[colPos][i + 1].getMark() == Empty) break;
+		if(gridArray[colPos][i + 1].getMark() == Empty) break;
 
 		if(gridArray[colPos][i].getMark() == gridArray[colPos][i + 1].getMark()) {
 			counter++;
@@ -92,9 +98,12 @@ CellMark Grid::checkVictoryCol(int colPos) const {
 CellMark Grid::checkVictorySouthEastDiag() const {
 	int counter = 0;
 
+	if(gridArray[0][0].getMark() == Empty)
+	    return Empty;
+
 	//check diagonally (left to right)
 	for(int i = 0, j = 0; i < gridSize - 1; i++) {
-		if(gridArray[i][j].getMark() == Empty || gridArray[i + 1][j + 1].getMark() == Empty)
+		if(gridArray[i + 1][j + 1].getMark() == Empty)
 			break;
 
 		if(gridArray[i][j].getMark() == gridArray[i + 1][j + 1].getMark()) {
@@ -113,9 +122,12 @@ CellMark Grid::checkVictorySouthEastDiag() const {
 CellMark Grid::checkVictorySouthWestDiag() const {
 	int counter = 0;
 
+	if(gridArray[gridSize - 1][0].getMark() == Empty)
+	    return Empty;
+
 	//check diagonally (right to left)
 	for(int i = gridSize - 1, j = 0; i >= 0; i--) {
-		if(gridArray[i][j].getMark() == Empty || gridArray[i - 1][j + 1].getMark() == Empty)
+		if(gridArray[i - 1][j + 1].getMark() == Empty)
 			break;
 
 		if(gridArray[i][j].getMark() == gridArray[i - 1][j + 1].getMark()) {
