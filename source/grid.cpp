@@ -20,6 +20,10 @@ Cell** Grid::getGridArray() const {
   return gridArray;
 }
 
+GridSupervisor Grid::getGridSuper() const {
+	return supervisor;
+}
+
 CellMark Grid::checkVictoryCondition() const {
 	CellMark res;
 	//check horizontally
@@ -127,8 +131,9 @@ CellMark Grid::checkVictorySouthWestDiag() const {
 	return Empty;
 }
 
-void Grid::makeMove(int posX, int posY, CellMark mark) const {
+void Grid::makeMove(int posX, int posY, CellMark mark) {
 	gridArray[posX][posY].setMark(mark);
+	supervisor.processSubElementAt(posX, posY, gridSize);
 }
 
 Grid::~Grid() {

@@ -10,12 +10,14 @@ class Grid {
 
     public:
       Grid(int size);
-      
+
       const int getSize() const;
 
       Cell** getGridArray() const;
 
       Cell getCell(int posX, int posY) const;
+
+      GridSupervisor getGridSuper() const;
 
       CellMark checkVictoryCondition() const;
 
@@ -27,7 +29,7 @@ class Grid {
 
       CellMark checkVictorySouthWestDiag() const;
 
-      void makeMove(int posX, int posY, CellMark mark) const;
+      void makeMove(int posX, int posY, CellMark mark);
 
       ~Grid();
 };

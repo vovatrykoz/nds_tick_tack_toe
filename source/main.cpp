@@ -43,7 +43,7 @@ void GenerateAiMove(Difficulties diff, Grid* grid, Turn* turn );
 int DetermineLineCoord(int pixel);
 
 
-void PrintDebugInfo(PrintConsole *console, touchPosition touch, int maxXStretch, int maxYStretch, Cell** grid, int size, vector<supervElement> gridSuperv);
+void PrintDebugInfo(PrintConsole *console, touchPosition touch, int maxXStretch, int maxYStretch, Cell** grid, int size, GridSupervisor super);
 
 //---------------------------------------------------------------------------------
 int main(void) {
@@ -82,7 +82,7 @@ int main(void) {
 			Renderer(&grid, console);
 			touchRead(&touch);
 
-			PrintDebugInfo(console, touch, maxXStretch, maxYStretch, grid.getGridArray(), grid.getSize(), gridSuperv);
+			PrintDebugInfo(console, touch, maxXStretch, maxYStretch, grid.getGridArray(), grid.getSize(), grid.getGridSuper());
 
 		    if(winner == Empty) {
 				if(ProcessUserInput(touch, &grid, &turn, maxXStretch, maxYStretch, &gridSuperv)) {
@@ -107,11 +107,8 @@ bool ProcessUserInput(touchPosition touch, Grid* grid, Turn* turn, int maxXStret
 	//if within the grid
 	if((touch.px > TOUCH_BASE_PX && touch.px < maxXStretch) && (touch.py > TOUCH_BASE_PX && touch.py < maxYStretch)) {
 		unsigned int posX = DetermineLineCoord(touch.px);
-		unsigned int posY = DetermineLineCoord(touch.py);
-		if(RegisterMove(grid, turn, posX, posY)) {
-			gridSuperv->push_back({posX + posY * grid->getSize(), Winnable});
-			return true;
-		}
+		unsigned int posY = DetermineLineCoord(touch.py);			
+		return RegisterMove(grid, turn, posX, posY);	
 	}
 
 	return false;
@@ -167,7 +164,7 @@ int DetermineLineCoord(int pixel) {
 	return (pixel - TOUCH_BASE_PX) / TOUCH_PIX_STEP;
 }
 
-void PrintDebugInfo(PrintConsole *console, touchPosition touch, int maxXStretch, int maxYStretch, Cell** grid, int size, vector<supervElement> gridSuperv) {
+void PrintDebugInfo(PrintConsole *console, touchPosition touch, int maxXStretch, int maxYStretch, Cell** grid, int size, GridSupervisor super) {
 	consoleSetWindow(console, 20, 20, 10, 10);
 
 	cout << grid;
@@ -187,8 +184,8 @@ void PrintDebugInfo(PrintConsole *console, touchPosition touch, int maxXStretch,
 
 	consoleSetWindow(console, 25, 0, 30, 30);
 
-	for(unsigned int i = 0; i < gridSuperv.size(); i++)
-		cout << gridSuperv[i].compId;
+	//for(unsigned int i = 0; i < super.supervArr.size(); i++)
+		//cout << super.supervArr[i].compId;
 /*
 	for(int i = 0; i < size; i++)
 	    for(int j = 0; j < size; j++) {
