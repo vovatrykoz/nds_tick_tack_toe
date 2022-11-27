@@ -1,10 +1,12 @@
-#include "cell.h"
-#include <vector>
+#include <cell.h>
+#include <gridSupervisor.h>
 
 class Grid {
     private:
       const int gridSize;
-      vector<vector<Cell>> gridArray;
+
+      Cell** gridArray;
+      GridSupervisor supervisor;
 
     public:
       const int getSize() const;
@@ -14,8 +16,18 @@ class Grid {
       Cell getCell(int posX, int posY) const;
 
       cellMark checkVictoryCondition() const;
+      
+      CellMark checkVictoryCondition() const;
 
-      void makeMove(int posX, int posY, cellMark mark);
+      CellMark checkVictoryRow(int rowPos) const;
 
-      Grid(int size);
+      CellMark checkVictoryCol(int colPos) const;
+
+      CellMark checkVictorySouthEastDiag() const;
+
+      CellMark checkVictorySouthWestDiag() const;
+
+      void makeMove(int posX, int posY, CellMark mark) const;
+
+      ~Grid();
 };
