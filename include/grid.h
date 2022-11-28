@@ -15,8 +15,6 @@ class Grid {
 
       Cell** getGridArray() const;
 
-      Cell getCell(int posX, int posY) const;
-
       GridSupervisor getGridSuper() const;
 
       CellMark checkVictoryCondition() const;

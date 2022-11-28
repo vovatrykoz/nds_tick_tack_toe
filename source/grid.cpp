@@ -49,10 +49,6 @@ CellMark Grid::checkVictoryCondition() const {
 	return res;
 }
 
-Cell Grid::getCell(int posX, int posY) const {
-	return gridArray[posX][posY];
-}
-
 CellMark Grid::checkVictoryRow(int rowPos) const {
 	int counter = 0;
 
