@@ -114,7 +114,7 @@ bool ProcessUserInput(touchPosition touch, Grid* grid, Turn* turn, int maxXStret
 	return false;
 }
 
-bool RegisterMove(Grid* grid, Turn* turn, unsigned int posX, unsigned int posY) {
+bool RegisterMove(Grid* grid, Turn* turn, int posX, int posY) {
 	CellMark currMark = grid->getGridArray()[posX][posY].getMark();
 
 	if(currMark == Empty && *turn == Cross) {
@@ -135,7 +135,7 @@ void DrawGrid(const Grid *grid, PrintConsole *console) {
 
 	for (int i = 0; i < size; i++)
 		for (int j = 0; j < size; j++)
-			DrawCell(&(grid->getGridArray()[j][i]), 5 + 2 * j, 5 + 2 * i, console);
+			DrawCell(&(grid->getGridArray()[j][i]), GRID_OFFSET + 2 * j, GRID_OFFSET + 2 * i, console);
 }
 
 void DrawCell(const Cell *cell, int x, int y, PrintConsole *console) {
