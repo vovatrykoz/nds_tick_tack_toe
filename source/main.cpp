@@ -36,7 +36,7 @@ void DrawGrid(const Grid *grid, PrintConsole *console);
 void DrawCell(const Cell *cell, int x, int y, PrintConsole *console);
 bool ProcessUserInput(touchPosition touch, Grid* grid, Turn *turn, int maxXStretch, int maxYStretch, vector<supervElement> *gridSuperv);
 void fastPrint(int posX, int posY, int printNum);
-bool RegisterMove(Grid* grid, Turn* turn, unsigned int posX, unsigned int posY);
+bool RegisterMove(Grid* grid, Turn* turn, int posX, int posY);
 void GenerateAiMove(Difficulties diff, Grid* grid, Turn* turn );
 
 int DetermineLineCoord(int pixel);
