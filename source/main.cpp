@@ -80,7 +80,7 @@ int main(void) {
 		{
 			consoleClear();
 			touchRead(&touch);
-			//PrintDebugInfo(console, touch, maxXStretch, maxYStretch, grid.getGridArray(), grid.getSize(), grid.getGridSuper());
+			PrintDebugInfo(console, touch, maxXStretch, maxYStretch, grid.getGridArray(), grid.getSize(), grid.getGridSuper());
 
 		    if(winner == Empty) {
 				if(ProcessUserInput(touch, &grid, &turn, maxXStretch, maxYStretch, &gridSuperv)) {
@@ -181,8 +181,8 @@ void PrintDebugInfo(PrintConsole *console, touchPosition touch, int maxXStretch,
 
 	consoleSetWindow(console, 25, 0, 30, 30);
 
-	//for(unsigned int i = 0; i < super.supervArr.size(); i++)
-		//cout << super.supervArr[i].compId;
+	for(unsigned int i = 0; i < super.getSupervSize(); i++)
+		cout << super.getSupervArr()[i].compId;
 /*
 	for(int i = 0; i < size; i++)
 	    for(int j = 0; j < size; j++) {
