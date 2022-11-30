@@ -1,3 +1,5 @@
+#ifndef _CELL_
+#define _CELL_
 enum CellMark { Empty, X, O };
 
 class Cell {
@@ -11,3 +13,4 @@ class Cell {
 
       Cell();
 };
+#endif

@@ -35,7 +35,6 @@ static const string circledCell = "+-+"
 void DrawGrid(const Grid *grid, PrintConsole *console);
 void DrawCell(const Cell *cell, int x, int y, PrintConsole *console);
 bool ProcessUserInput(touchPosition touch, Grid* grid, Turn *turn, int maxXStretch, int maxYStretch, vector<supervElement> *gridSuperv);
-void fastPrint(int posX, int posY, int printNum);
 bool RegisterMove(Grid* grid, Turn* turn, int posX, int posY);
 void GenerateAiMove(Difficulties diff, Grid* grid, Turn* turn );
 
@@ -47,9 +46,9 @@ void PrintDebugInfo(PrintConsole *console, touchPosition touch, int maxXStretch,
 //---------------------------------------------------------------------------------
 int main(void) {
 //---------------------------------------------------------------------------------
-    const int size = 5;
+    const int size = 3;
 	int maxXStretch, maxYStretch;
-	maxXStretch = maxYStretch = TOUCH_BASE_PX + 16 * size;
+	maxXStretch = maxYStretch = TOUCH_BASE_PX + TOUCH_PIX_STEP * size;
 	Turn turn = Cross;
 	static const char *enumCellMarkStr[] = { "Empty", "Crosses", "Circles" };
 	//GameMode mode = Singleplayer;
@@ -182,7 +181,8 @@ void PrintDebugInfo(PrintConsole *console, touchPosition touch, int maxXStretch,
 	consoleSetWindow(console, 25, 0, 30, 30);
 
 	for(unsigned int i = 0; i < super.getSupervSize(); i++)
-		cout << super.getSupervArr()[i].compId;
+		if(super.getSupervArr()[i].compStat == Winnable)
+			cout << super.getSupervArr()[i].compId;
 /*
 	for(int i = 0; i < size; i++)
 	    for(int j = 0; j < size; j++) {

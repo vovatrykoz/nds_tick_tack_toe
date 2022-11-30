@@ -25,26 +25,33 @@ GridSupervisor Grid::getGridSuper() const {
 }
 
 CellMark Grid::checkVictoryCondition() const {
-	CellMark res;
-	//check horizontally
-	for(int i = 0; i < gridSize; i++) {
-		res = checkVictoryRow(i);
-		if(res != Empty)
-		    return res;
+	CellMark res = Empty;
+	int doubleSize = gridSize * 2;
+
+	for(unsigned int i = 0; i < supervisor.getSupervSize(); i++) {
+		if(supervisor.getSupervArr()[i].compStat == Winnable) {
+
+			int compId = supervisor.getSupervArr()[i].compId;
+
+			if(compId >= 0 && compId < gridSize) {
+				res = checkVictoryRow(compId);
+				if(res != Empty)
+					return res;
+			} else if(compId >= gridSize && compId < doubleSize) {
+				res = checkVictoryCol(compId - gridSize);
+				if(res != Empty)
+					return res;
+			} else if(compId == doubleSize) {
+				res = checkVictorySouthEastDiag();
+				if(res != Empty)
+					return res;
+			} else if(compId == doubleSize + 1) {
+				res = checkVictorySouthWestDiag();
+				if(res != Empty)
+					return res;
+			}
+		}
 	}
-
-	//check vertically
-	for(int i = 0; i < gridSize; i++) {
-		res = checkVictoryCol(i);
-		if(res != Empty)
-		    return res;
-	}
-
-	res = checkVictorySouthEastDiag();
-	if(res != Empty)
-		return res;
-
-	res = checkVictorySouthWestDiag();
 
 	return res;
 }
@@ -147,7 +154,7 @@ CellMark Grid::checkVictorySouthWestDiag() const {
 
 void Grid::makeMove(int posX, int posY, CellMark mark) {
 	gridArray[posX][posY].setMark(mark);
-	supervisor.processSubElementAt(posX, posY, gridSize);
+	supervisor.processSubComponent(posX, posY, gridSize, mark);
 }
 
 Grid::~Grid() {

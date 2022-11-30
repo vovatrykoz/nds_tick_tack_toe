@@ -1,4 +1,5 @@
 #include <supervElement.h>
+#include <cell.h>
 #include <vector>
 
 class GridSupervisor {
@@ -10,5 +11,5 @@ class GridSupervisor {
 
         unsigned int getSupervSize() const;
 
-        void processSubElementAt(unsigned int posX, unsigned int posY, unsigned int gridSize);
+        void processSubComponent(unsigned int posX, unsigned int posY, unsigned int gridSize, CellMark mark);
 };
