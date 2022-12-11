@@ -5,11 +5,19 @@ using namespace std;
 #include <iostream> //DEBUG ONLY REMOVE LATER
 
 Grid::Grid(int size) : gridSize(size) {
-  gridArray = (Cell**)calloc(sizeof(Cell*), gridSize);
+  gridArray = new Cell*[gridSize];
 
   for(int i = 0; i < gridSize; i++) {
-    gridArray[i] = (Cell*)calloc(sizeof(Cell), gridSize);
+    gridArray[i] = new Cell[gridSize];
   }
+}
+
+Grid::~Grid() {
+  for(int i = 0; i < gridSize; i++) {
+    delete[] gridArray[i];
+  }
+
+  delete[] gridArray;
 }
 
 const int Grid::getSize() const {
@@ -25,35 +33,42 @@ GridSupervisor Grid::getGridSuper() const {
 }
 
 CellMark Grid::checkVictoryCondition() const {
-	CellMark res = Empty;
-	int doubleSize = gridSize * 2;
+    CellMark res = Empty;
+    int doubleSize = gridSize * 2;
 
-	for(unsigned int i = 0; i < supervisor.getSupervSize(); i++) {
-		if(supervisor.getSupervArr()[i].compStat == Winnable) {
+    // Iterate over each row, column, and diagonal
+    for(unsigned int i = 0; i < supervisor.getSupervSize(); i++) {
+        // Check if this component is a winning configuration
+        if(supervisor.getSupervArr()[i].compStat == Winnable) {
+            int compId = supervisor.getSupervArr()[i].compId;
+            CellMark mark = Empty;
 
-			int compId = supervisor.getSupervArr()[i].compId;
+            // Check the rows
+            if(compId >= 0 && compId < gridSize) {
+                mark = checkVictoryRow(compId);
+            } 
+            // Check the columns
+            else if(compId >= gridSize && compId < doubleSize) {
+                mark = checkVictoryCol(compId - gridSize);
+            } 
+            // Check the south-east diagonal
+            else if(compId == doubleSize) {
+                mark = checkVictorySouthEastDiag();
+            } 
+            // Check the south-west diagonal
+            else if(compId == doubleSize + 1) {
+                mark = checkVictorySouthWestDiag();
+            }
 
-			if(compId >= 0 && compId < gridSize) {
-				res = checkVictoryRow(compId);
-				if(res != Empty)
-					return res;
-			} else if(compId >= gridSize && compId < doubleSize) {
-				res = checkVictoryCol(compId - gridSize);
-				if(res != Empty)
-					return res;
-			} else if(compId == doubleSize) {
-				res = checkVictorySouthEastDiag();
-				if(res != Empty)
-					return res;
-			} else if(compId == doubleSize + 1) {
-				res = checkVictorySouthWestDiag();
-				if(res != Empty)
-					return res;
-			}
-		}
-	}
+            if(mark != Empty) {
+                // A player has won, so return the mark of the winning player
+                return mark;
+            }
+        }
+    }
 
-	return res;
+    // No player has won, so return Empty
+    return res;
 }
 
 CellMark Grid::checkVictoryRow(int rowPos) const {
@@ -155,13 +170,5 @@ CellMark Grid::checkVictorySouthWestDiag() const {
 void Grid::makeMove(int posX, int posY, CellMark mark) {
 	gridArray[posX][posY].setMark(mark);
 	supervisor.processSubComponent(posX, posY, gridSize, mark);
-}
-
-Grid::~Grid() {
-  for(int i = 0; i < gridSize; i++) {
-    free(gridArray[i]);
-  }
-  
-  free(gridArray);
 }
 

@@ -5,8 +5,11 @@ class Grid {
     private:
       const int gridSize;
 
-      Cell** gridArray;
-      GridSupervisor supervisor;
+      // Use a two-dimensional array to store the grid
+    std::array<std::array<CellMark, MAX_GRID_SIZE>, MAX_GRID_SIZE> grid;
+
+    // Use a bitset to keep track of the rows, columns, and diagonals that are still in play
+    std::bitset<MAX_GRID_SIZE * 3> inPlay;
 
     public:
       Grid(int size);
